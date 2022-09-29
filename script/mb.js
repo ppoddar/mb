@@ -1,117 +1,95 @@
-
+// Two parallel array of chapetr and ids
 let chapter_ids    = []
-let chapter_titles = []
-let chapter_urls   = []
-
-function add_chapter(chapter_id, chapter_title, chapter_url) {
-    chapter_ids.push(chapter_id)
-    chapter_titles.push(chapter_title)
-    chapter_urls.push(chapter_url)
-}
-
+let chapters       = []
+/**
+ * Adds th egiven chapter. The order in which the chapters are added determines
+ * the order they are shown and navigated
+ * @param {Chapter} chapter 
+ */
 function add_chapter(chapter) {
     chapter_ids.push(chapter.id)
     chapters.push(chapter)
 }
 
 /**
- * look up the mapping table of chapter id -> chapter title
- * @param {*} chapter_id 
- */
-function get_chapter_title(chapter_id) {
-    var idx = chapter_ids.indexOf(chapter_id)
-    var chapter_title = chapter_titles[idx]
-    console.log(`get_chapter_title chapter_id:${chapter_id} idx:${idx} title:${chapter_title}`)
-    return chapter_title
-}
-/**
- * look up the mapping table of chapter id -> chapter file
- * @param {*} chapter_id 
- */
- function get_chapter_url(chapter_id) {
-    var idx = chapter_ids.indexOf(chapter_id)
-    var chapter_url = chapter_urls[idx]
-    console.log(`get_chapter_url chapter_id:${chapter_id} idx:${idx} url:${chapter_url}`)
-    return chapter_url
-}
-/**
- * Show the content of the given chapter id to main content area
+ * Show the content of the given chapter to main content area
  * Update the navigation button state
  * 
- * @param {*} chapter_id is always valid. It is an error to supply invalid cahapter id
+ * @param {Chapter} chapter to be shown. A warning if chapter is undefiend
  */
-function show_chapter(chapter_id) {
-    console.log(`show_chapter ${chapter_id}`)
-    if (!chapter_id) {
-        console.warn(`can not show_chapter ${chapter_id}`)
+function show_chapter(chapter) {
+    console.debug(`show_chapter ${chapter.id}`)
+    if (!chapter) {
+        console.warn(`can not show undefiend chapter`)
         return
     }
-    const title = get_chapter_title(chapter_id)
-    const url   = get_chapter_url(chapter_id)
-    console.log(`show chapter ${chapter_id}: [${title}] ${url}`)
-    $('#chapter-title').text(title)
-    var chapter_next_id = find_chapter_id_next(chapter_id)
-    var chapter_prev_id = find_chapter_id_prev(chapter_id)
-    $('#chapter-main').load(url)
+    console.debug(`show chapter ${chapter.id}: [${chapter.title}] ${chapter.url}`)
+    $('#chapter-title').text(chapter.title)
+    var chapter_next = find_chapter_next(chapter)
+    var chapter_prev = find_chapter_prev(chapter)
+    $('#chapter-main').load(chapter.url)
     $("#chapter-next-button").off()
-    if (chapter_next_id)  {
-        $("#chapter-next-button").on('click', show_chapter.bind(null, chapter_next_id))
-        show_tooltip($("#chapter-next-tooltip-text"), get_chapter_title(chapter_next_id), 'right')
+    if (chapter_next)  {
+        var $button = $("#chapter-next-button")
+        $button.on('click', show_chapter.bind(null, chapter_next))
+        show_status($button, chapter_next.title, chapter.title)
     }
     $("#chapter-prev-button").off()
-    if (chapter_prev_id) {
-        $("#chapter-prev-button").on('click', show_chapter.bind(null, chapter_prev_id))
-        show_tooltip($("#chapter-prev-tooltip-text"), get_chapter_title(chapter_prev_id), 'left')
+    if (chapter_prev) {
+        var $button = $("#chapter-prev-button")
+        $button.on('click', show_chapter.bind(null, chapter_prev))
+        show_status($button, chapter_prev.title, chapter.title)
     }
 }
 
 
 
 /**
- * Iterate over the keys in a map. The map preserves order.
- * @param {*} chapter_id 
+ * Gets the chapter next to the given chapter
+ * @param {Chapter} chapter
+ * @return next chapter or undefined
  */
-function find_chapter_id_next(chapter_id) {
-    var idx = chapter_ids.indexOf(chapter_id)
-    if (idx == chapter_ids.size-1) {
-        console.warn(`no next chapter for ${chapter_id} idx:${idx}`)
+function find_chapter_next(chapter) {
+    var idx = chapter_ids.indexOf(chapter.id)
+    if (idx >= chapters.size-1) {
+        console.warn(`no next chapter for ${chapter.id} idx:${idx}`)
         return
     }
-    var next = chapter_ids[idx+1]
-    console.log(`find_chapter_id_next chapter_id ${chapter_id}. Returing next ${next}...`)
+    var next = chapters[idx+1]
+    if (next)
+        console.log(`find_chapter_next chapter_id ${chapter.id}. Returing next ${next.title}...`)
 
     return next
 
 
 }
 /**
- * Iterate over the keys in a map. The map preserves order.
- * @param {*} chapter_id 
+ * Gets the chapter previous to the given chapter
+ * @param {Chapter} chapter
+ * @returns previous chpater or undefiend
  */
- function find_chapter_id_prev(chapter_id) {
-    var idx = chapter_ids.indexOf(chapter_id)
+ function find_chapter_prev(chapter) {
+    var idx = chapter_ids.indexOf(chapter.id)
     if (idx == 0) {
-        console.warn(`no previous chapter for ${chapter_id} idx:${idx}`)
-
+        console.warn(`no previous chapter for ${chapter.id} idx:${idx}`)
         return
     }
-    var prev = chapter_ids[idx-1]
-    console.log(`find_chapter_id_prev chapter_id ${chapter_id}. Returing prev ${prev}...`)
-
+    var prev = chapters[idx-1]
+    console.log(`find_chapter_prev chapter_id ${chapter.id}. Returing prev ${prev.title}...`)
     return prev
 
 }
 
-function show_tooltip($tooltip, text, css) {
-    $tooltip.text('')
-    $tooltip.text(text)
-    var width = $tooltip.width()
-
-    var twidth = '-' + (width/2).toString() +'.px'
-    console.log(`tooltip text ${text} with ${width}`)
-    $tooltip.css('position', 'absolute')
-    $tooltip.css(css, twidth)
-    $tooltip.css('top', '24px')
+/**
+ * Shows tooltip 
+ * @param {*} text 
+ */
+function show_status($button, text1, text2) {
+    $button.hover(function() {
+        $('#status').text(text1)
+    }, function() {
+        $('#status').text(text2)
+    })
 }
 
 function show_toc($dialog) {
@@ -130,20 +108,20 @@ function populate_toc_items($dialog) {
     for (var i = 0; i < chapter_ids.length; i++) {
         var $li = $('<li>')
         $ul.append($li)
-        var chapter_id = chapter_ids[i]
-        $li.text(chapter_id + ' ' + chapter_titles[i])
+        var chapter = chapters[i]
+        $li.text(chapter.id + ' ' + chapter.title)
         $li.on('click', function() {
             $dialog.dialog('close')
-            show_chapter(chapter_id)
             // IMPORTANT
             return false
         })
+        $li.on('click', show_chapter.bind(null, chapter))
     }
 }
 
 
 class Chapter {
-    constructor() {
+    constructor(data) {
         this.id    = data['id']
         this.title = data['title']
         this.url   = data['url']
