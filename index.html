@@ -60,15 +60,20 @@
 
     <div id="chapter-main"></div>
 
-    <div id="status-bar" class="w3-bar w3-green">
+    <div id="status-bar" class="w3-bar w3-green" style="position: fixed; bottom:0">
         <div id="status" class="w3-bar-item">Status</div>
     </div>    
     <div id="toc"></div></div>
 
     <script type="text/javascript">
-        add_chapter(new Chapter({id:"1.1", title:"Chapter 1.1", url:"content/ch1/1.html"}))
-        add_chapter(new Chapter({id:"1.2", title:"Chapter 1.2", url:"content/ch1/2.html"}))
-        add_chapter(new Chapter({id:"2.1", title:"Chapter 2.1", url:"content/ch2/1.html"}))
+        add_section(new Section({id:"1", title:"Section 1", chapters:[
+            new Chapter({id:"1.1", title:"Chapter 1.1", url:"content/ch1/1.html"}),
+            new Chapter({id:"1.2", title:"Chapter 1.2", url:"content/ch1/2.html"})
+        ]}))
+        add_section(new Section({id:"2", title:"Section 2", chapters:[
+            new Chapter({id:"2.1", title:"Chapter 2.1", url:"content/ch2/1.html"})
+        ]}))
+
         $('#menu-toc').on('click', show_toc.bind(null,$('#toc')))
         $('#chapter-next-button').on('click', function(){
             var chapter = $(this).data('chapter')

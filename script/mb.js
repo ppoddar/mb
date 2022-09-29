@@ -1,6 +1,7 @@
 // Two parallel array of chapetr and ids
 let chapter_ids    = []
 let chapters       = []
+let sections       = []
 /**
  * Adds th egiven chapter. The order in which the chapters are added determines
  * the order they are shown and navigated
@@ -10,7 +11,13 @@ function add_chapter(chapter) {
     chapter_ids.push(chapter.id)
     chapters.push(chapter)
 }
-
+function add_section(section) {
+    console.debug(`add_section ${section.title}`)
+    sections.push(section)
+    for (var i = 0; i < section.chapters.length; i++) {
+        add_chapter(section.chapters[i])
+    }
+}
 /**
  * Show the content of the given chapter to main content area
  * Update the navigation button state
@@ -32,13 +39,13 @@ function show_chapter(chapter) {
     if (chapter_next)  {
         var $button = $("#chapter-next-button")
         $button.on('click', show_chapter.bind(null, chapter_next))
-        show_status($button, chapter_next.title, chapter.title)
+        show_status($button, 'go to '+chapter_next.title, 'showing ' + chapter.title)
     }
     $("#chapter-prev-button").off()
     if (chapter_prev) {
         var $button = $("#chapter-prev-button")
         $button.on('click', show_chapter.bind(null, chapter_prev))
-        show_status($button, chapter_prev.title, chapter.title)
+        show_status($button, 'go to '+chapter_prev.title, 'showing '+chapter.title)
     }
 }
 
@@ -57,7 +64,7 @@ function find_chapter_next(chapter) {
     }
     var next = chapters[idx+1]
     if (next)
-        console.log(`find_chapter_next chapter_id ${chapter.id}. Returing next ${next.title}...`)
+        console.debug(`find_chapter_next chapter_id ${chapter.id}. Returing next ${next.title}...`)
 
     return next
 
@@ -75,7 +82,7 @@ function find_chapter_next(chapter) {
         return
     }
     var prev = chapters[idx-1]
-    console.log(`find_chapter_prev chapter_id ${chapter.id}. Returing prev ${prev.title}...`)
+    console.debug(`find_chapter_prev chapter_id ${chapter.id}. Returing prev ${prev.title}...`)
     return prev
 
 }
@@ -92,8 +99,18 @@ function show_status($button, text1, text2) {
     })
 }
 
+/**
+ * Renders all sections and their chapters to the given element.
+ * Displays the element as a dialog.
+ * Each item when clicked will display the content 
+ * 
+ * Do nothing if the given dialog element is already populated
+ * 
+ * @param {jQuery} $dialog 
+ */
 function show_toc($dialog) {
     if ($dialog.children().length == 0) {
+        console.debug(`show_toc ${sections.length} sections`)
         populate_toc_items($dialog)
     }
     $dialog.dialog({
@@ -102,13 +119,37 @@ function show_toc($dialog) {
         title: "Chapters"})
 }
 
+/**
+ * 
+ * @param {jQuery} $dialog 
+ */
 function populate_toc_items($dialog) {
     var $ul = $('<ul>')
     $dialog.append($ul)
-    for (var i = 0; i < chapter_ids.length; i++) {
+    console.debug(`populate_toc_items ${sections.length} sections`)
+    for (var i = 0; i < sections.length; i++) {
+        var $li = populate_section($dialog, sections[i])
+        $ul.append($li)
+    }
+}
+/**
+ * Create a section
+ * @param {jQuery} $dialog
+ * @param {Section} section 
+ */
+function populate_section($dialog, section) {
+    console.debug(`populate_section ${section.title} ${section.chapters.length} chapetrs`)
+
+    var $item = $('<li>')
+    $dialog.append($item)
+    $item.text(section.title)
+
+    var $ul = $('<ul>')
+    $item.append($ul)
+    for (var i =0; i < section.chapters.length; i++) {
+        var chapter = section.chapters[i]
         var $li = $('<li>')
         $ul.append($li)
-        var chapter = chapters[i]
         $li.text(chapter.id + ' ' + chapter.title)
         $li.on('click', function() {
             $dialog.dialog('close')
@@ -117,7 +158,9 @@ function populate_toc_items($dialog) {
         })
         $li.on('click', show_chapter.bind(null, chapter))
     }
+    return $item
 }
+
 
 
 class Chapter {
@@ -125,6 +168,14 @@ class Chapter {
         this.id    = data['id']
         this.title = data['title']
         this.url   = data['url']
+    }
+}
+
+class Section {
+    constructor(data) {
+        this.id = data['id']
+        this.title = data['title']
+        this.chapters = data['chapters']
     }
 }
 
