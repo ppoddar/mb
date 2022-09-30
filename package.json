@@ -1,0 +1,22 @@
+{
+  "name": "mb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "site.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ppoddar/mb.git"
+  },
+  "author": "Pinaki Poddar pinaki.poddar@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ppoddar/mb/issues"
+  },
+  "homepage": "https://github.com/ppoddar/mb#readme",
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
