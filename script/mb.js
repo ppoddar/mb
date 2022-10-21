@@ -137,7 +137,7 @@ class Mahabharath {
         chapter.idx = this.repo.chapters.length
         chapter.label = `${section.label}.${roman_numeral(section.chapters.length)}`
         chapter.url = `${section.root}/${chapter.src}`
-        console.log(`add_chapter ${chapter.idx} [${chapter.label} ${chapter.title}] ${chapter.url}`)
+        console.debug(`add_chapter ${chapter.idx} [${chapter.label} ${chapter.title}] ${chapter.url}`)
         this.repo.chapters.push(chapter)
     }
     /**
