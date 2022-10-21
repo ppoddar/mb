@@ -2,88 +2,47 @@
 <head>
     <title>Mahabharath</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta http-equiv="content-type" content="text-html; charset=utf-8">
     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="script/mb.js"></script>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/blitzer/jquery-ui.min.css"> 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/mb.css">
 
-    <script>
-        $().ready(function(){
-            
-    
-        })
-
-    </script>
+    <style>
+        body, html {
+            height: 100%;
+          }
+          
+          .bg {
+            /* The image used */
+            background-image: url("./images/mb-cover.jpg");
+          
+            /* Full height */
+            height: 100%;
+          
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+    </style>
 </head>
 
 <body>
-    <div id="header-main" class="'w3-bar">
-        <img  class="w3-bar-item" src="images/mb-logo.jpeg">
-        <span class="w3-bar-item" id="chapter-title">Chapter Title</span>
-
-        <span class="w3-bar-item w3-right material-icons" id="menu-more">more_vert</span>
-        <span class="w3-bar-item w3-right material-icons" id="menu-search"
-            style="padding-right:4em;">search</span>
-        <input class="w3-bar-item w3-right" id="search-item" 
-            placeholder="find character,place"
-            >
-        <span class="w3-bar-item w3-right material-icons" id="menu-toc"
-        style="padding-right:4em;">menu</span>
-
-    </div>
-
-    <div id="header-sub" class="w3-bar">
-        <span class="w3-bar-item" id="breadcrumb">breadcumbs</span>
-
-        <!-- navigation button is associated 'chapter-id' data with a chapter_id -->
-        <div class="w3-bar-item w3-right w3-tooltip">
-            <span class="material-icons" id="chapter-next-button">arrow_right</span>
-            <!-- position should accommodate long chapter title. calculated dynamically -->
-            <span class="w3-text tooltip-navigation w3-text-small w3-border-black" id="chapter-next-tooltip-text"
-                  style="position:absolute;left:0;top:18px">
-                  </span>
+    <div class="bg w3-display-container">
+        <div class="w3-text-white w3-margin-left w3-display-topleft w3-padding w3-margin-top" 
+            style="line-height: 1.0em;">
+            <a href="mb.html"><span style="font-family: 'Brush Script MT', cursive;font-size:4em;">Mahabharatha</span></a> <br>
+            <p class="w3-xlarge">the greatest story ever told...</p>
         </div>
-
-        <div class="w3-bar-item w3-right w3-tooltip">
-            <span class="material-icons" id="chapter-prev-button">arrow_left</span>
-            <!-- position should accommodate long chapter title. calculated dynamically -->
-            <span class="w3-text tooltip-navigation w3-text-small w3-border-black" id="chapter-prev-tooltip-text"
-                  style="position:absolute;left:0;top:18px;width:24em;">
-                  </span>
+        <div class="w3-display-topright w3-text-white w3-padding">
+            <a href="mb.html"><span>Enter </span>
+                <span class='material-icons'>login</span></a>
         </div>
     </div>
-
-    <div id="chapter-main"></div>
-
-    <div id="status-bar" class="w3-bar w3-green" style="position: fixed; bottom:0">
-        <div id="status" class="w3-bar-item">Status</div>
-    </div>    
-    <div id="toc"></div></div>
-
-    <script type="text/javascript">
-        add_section(new Section({id:"1", title:"Section 1", chapters:[
-            new Chapter({id:"1.1", title:"Chapter 1.1", url:"content/ch1/1.html"}),
-            new Chapter({id:"1.2", title:"Chapter 1.2", url:"content/ch1/2.html"})
-        ]}))
-        add_section(new Section({id:"2", title:"Section 2", chapters:[
-            new Chapter({id:"2.1", title:"Chapter 2.1", url:"content/ch2/1.html"})
-        ]}))
-
-        $('#menu-toc').on('click', show_toc.bind(null,$('#toc')))
-        $('#chapter-next-button').on('click', function(){
-            var chapter = $(this).data('chapter')
-            show_chapter(chapter)
-        })
-        $('#chapter-prev-button').on('click', function(){
-            var chapter_id = $(this).data('chapter')
-            show_chapter(chapter)
-        })
-        show_chapter(chapters[0])
-
-    </script>
 </body>

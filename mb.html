@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<head>
+    <title>Mahabharath</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text-html; charset=utf-8">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script src="script/mb.js"></script>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/blitzer/jquery-ui.min.css"> 
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/mb.css">
+
+    <script>
+        $().ready(function(){
+            var mb = new Mahabharath()
+            // The content repository is populated statically
+            // The content URLs are hardcoded
+            // Add sections and chapters that refer to the content files on the server w.r.t sectiopn root
+            var adiParva  = mb.new_section(new Section({title:"Adi Parva", root:"adi", src:'adi.html'}))
+            var vanaParva = mb.new_section(new Section({title:"Vana Parva", root: "vana", src:'vani.html'}))
+            mb.add_chapter(adiParva,  new Chapter({title:"The Kuru Clan",           src:"00_kuru_clan.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Banished from Heaven",    src:"01_banished_from_heaven.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Ganga Makes a Pact",      src:"02_ganga_makes_a_pact.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Babies floated in river", src:"03_babies_floated_in_river.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Curse of Octobasu",       src:"04_curse_of_octobasu.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"The Lost Son Returns",    src:"05_lost_son_returns.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"A Marriage Proposal",     src:"06_marriage_proposal.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Visham Elopes the Brides",src:"08_vishma_elopes_brides.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Surrogate Birth",         src:"09_surrogate_birth.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Vyaas Comes to Rescue",   src:"10_vyaas_comes_to_rescue.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Birth of Kurus",          src:"11_birth_of_kurus.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"The Death of Pandu",      src:"13_death_of_pandu.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Murder Attempt on Bheema",src:"14_bheema_murder_attempt.html"}))
+            mb.add_chapter(adiParva,  new Chapter({title:"Drona Trains the Prinnces",src:"15_drona_trains_princes.html"}))
+            
+            mb.add_chapter(vanaParva, new Chapter({title:"Moy builds palace",       src:"01_moy_builds_palace.html"}))
+            
+            mb.repo.debug()
+
+            // show TOC as a pop-up dialog
+            $('#menu-toc').on('click', mb.show_toc.bind(mb,$('#toc')))
+            // navigate to next chapter. 
+            $('.chapter-next-button').on('click', function(){
+                var chapter = $(this).data('chapter') // get the chapter associated with the button
+                mb.show_chapter(chapter)
+            })
+            // navigate to previous chapter.
+            $('.chapter-prev-button').on('click', function(){
+                var chapter = $(this).data('chapter') // get the chapter associated with the button
+                mb.show_chapter(chapter)
+            })
+
+            mb.show_toc($('#toc'))
+            // show the first chapter
+            var firstChapter = mb.read_current_chapter_from_local_storage()
+            mb.show_chapter(firstChapter)
+        })
+
+    </script>
+</head>
+
+<body>
+    <!-- The HTML element identifiers are referrred by mb.js script -->
+    <div id="header-main" class="'w3-bar w3-padding-16" style="background-color: #D4AF37;">
+        <a href='index.html'><img class="w3-bar-item w3-margin" src="images/mb-logo.jpeg"></a>
+        <div class="w3-bar-item" style="width:32em;display:inline-block">
+            <span class="w3-xxxlarge">Mahabharath</span><br>
+            <span class="w3-xxlarge" id="section-title"></span><br>
+        </div>
+        <span class="w3-bar-item w3-right material-icons" id="menu-more">more_vert</span>
+        <span class="w3-bar-item w3-right material-icons" id="menu-search"
+            style="padding-right:4em;">search</span>
+        <input class="w3-bar-item w3-right" id="search-item" 
+            placeholder="find character/place">
+    </div>
+
+    <div class="'w3-row-padding">
+        <div class="w3-col m2 l2 w3-black w3-padding" >
+            <div class="w3-text-yellow" style="text-align: center;">Chapters</div>
+            <div id="toc"></div>
+        </div>
+        <div class="w3-col m8 l8 w3-black">
+            <span class="w3-text-yellow w3-padding" id="chapter-title"></span>
+            <div id="navigation-button" style="margin-left:auto;margin-right:0;display:inline">
+                <span class="material-icons chapter-prev-button">arrow_left</span>
+                <span class="material-icons chapter-next-button">arrow_right</span>
+            </div>
+            <div id="chapter-main" class="w3-white w3-margin w3-padding"></div>
+        </div>
+        <div class="w3-col m2 l2 " style="text-align: center;">
+            <div id='glossary-title' class="w3-black w3-text-yellow" style="text-align: center;">Mahabhartha</div>
+            <div id="glossary">The greatest story ever told</div>
+        </div>
+    </div>
+    
+
+    <div id="status-bar" class="w3-bar" style="position: fixed; bottom:0;background-color: #D4AF37;">
+        <span class="w3-bar-item w3-right">Copyright</span>
+    </div>    
+    
+    
+
+    
+</body>

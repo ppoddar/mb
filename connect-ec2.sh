@@ -1,0 +1,5 @@
+#!/bin/sh
+REMOTE_USER=ubuntu
+REMOTE_HOST=184.72.3.220
+PEM_FILE=digital-artisan.cer
+ssh -i $PEM_FILE $REMOTE_USER@$REMOTE_HOST

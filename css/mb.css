@@ -1,1 +1,21 @@
 
+section:first-child:first-letter {
+    color: #903; 
+    font-family: Georgia;
+    font-size: 4em;
+  }
+
+  .glossary-term {
+    color: blue;
+    font-style: italic;
+  }
+
+  .story {
+    padding: 1em;
+    background-color: #DDDDDD;
+    border: 1pt black solid;
+    margin-left: 8em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    border-radius: 1em;
+  }
