@@ -54,7 +54,7 @@
             })
 
             mb.show_toc($('#toc'))
-            // show the first chapter
+            // show the last shown chapter
             var firstChapter = mb.read_current_chapter_from_local_storage()
             mb.show_chapter(firstChapter)
         })
@@ -82,7 +82,7 @@
             <div class="w3-text-yellow" style="text-align: center;">Chapters</div>
             <div id="toc"></div>
         </div>
-        <div class="w3-col m8 l8 w3-black">
+        <div class="w3-col m8 l8">
             <span class="w3-text-yellow w3-padding" id="chapter-title"></span>
             <div id="navigation-button" style="margin-left:auto;margin-right:0;display:inline">
                 <span class="material-icons chapter-prev-button">arrow_left</span>
@@ -90,9 +90,11 @@
             </div>
             <div id="chapter-main" class="w3-white w3-margin w3-padding"></div>
         </div>
-        <div class="w3-col m2 l2 " style="text-align: center;">
-            <div id='glossary-title' class="w3-black w3-text-yellow" style="text-align: center;">Mahabhartha</div>
-            <div id="glossary">The greatest story ever told</div>
+        <div class="w3-col m2 l2 ">
+            <div class='w3-black' style="text-align: center;">
+                <span id='glossary-title' class="w3-black w3-text-yellow" style="text-align: center;">Mahabhartha</span>
+            </div>
+            <div id="glossary-content" class="w3-padding">The greatest story ever told</div>
         </div>
     </div>
     

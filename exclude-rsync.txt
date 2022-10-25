@@ -2,3 +2,6 @@
 .gitignore
 .DS_Store
 digital-artisan.cer
+makesite.sh 
+connect-ec2.sh 
+exclude-rsync.txt 

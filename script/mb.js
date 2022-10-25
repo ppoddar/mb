@@ -3,12 +3,14 @@
  *   The model classes are: Repository , Section and Chapter
  *    
  *   1. The functions in the script renders the model classes on HTML element
- *   using JQuery library. The HTML elements are referred by their ids.
- *   2. Each chapter specifies its content as URL. That URL is loaded dynamically 
- *   on to a HTML element.
+ *   using JQuery library. The HTML elements are declared in mb.html
+ *   and are referred in this script by their ids.
+ *   2. Each chapter specifies its content as URL to a HTML file in the server. 
+ *      That file is loaded dynamically on to a HTML element.
+ *      @see show_chapter()
  *   3. The navigation buttons are populated with the next and previous chapter in
- *      the repository. Hence the chapters are ordered
- *   4. The table of content is dynamically generated from the repo.
+ *      the repository. Hence the chapters are ordered as they are added to the repository
+ *   4. The table of content is dynamically generated from the repository.
  *   5. The chapter is parsed for tokens to be used in Glossary. The glossary terms
  *      are rendered using a template
  */
@@ -25,18 +27,9 @@ class Repository {
         this.sections       = []  
     }
 
-    debug() {
-        for (var i = 0; i < this.sections.length; i++) {
-            console.debug(`${this.sections[i].title}`)
-        }
-        for (var i = 0; i < this.chapters.length; i++) {
-            var chapter = this.chapters[i]
-            console.debug(`${chapter.idx} ${chapter.label} ${chapter.title}`)
-        }
-    }
     /**
-     * Find the chapter with given index.
-     * If given idx is out of bounds, get the first chapter  
+     * Find the chapter with given 0-based index.
+     * If given idx is out of bounds, get the first i.e. chapter  at index 0
      * @param {int} idx 0-based serial index of the chapters
      * @returns a chapter or the 0-th chapter
      */
@@ -48,14 +41,24 @@ class Repository {
             return this.chapters[0]
         }
     }
+
+    debug() {
+        for (var i = 0; i < this.sections.length; i++) {
+            console.debug(`${this.sections[i].title}`)
+        }
+        for (var i = 0; i < this.chapters.length; i++) {
+            var chapter = this.chapters[i]
+            console.debug(`${chapter.idx} ${chapter.label} ${chapter.title}`)
+        }
+    }
 }
 
 // **********************************************************************
 class Chapter {
     /**
      * creates a chapter. The index is not assigned at construction.
-     * It is added when chapter is added 
-     * @param {object} data 
+     * It is added when chapter is added to the repository
+     * @param {object} data has label, title and src
      */
     constructor(data) {
         this.idx   = -1
@@ -70,7 +73,7 @@ class Section {
     /**
      * creates a section. The index is not assigned at construction.
      * It is added when section is added 
-     * @param {object} data 
+     * @param {object} data has label, title, root and src
      */
     constructor(data) {
         this.idx   = -1
@@ -94,11 +97,13 @@ class Mahabharath {
         this.repo = new Repository()
     }
     /**
-     * The last shown chapter index is stored in local storage.
+     * The last shown chapter index is stored in local storage with 'chapter-idx' as key.
+     * If not stored defaults to 0.
      * @returns last shown chapter
      */
     read_current_chapter_from_local_storage = function() {
         var idx = window.localStorage.getItem('chapter-idx') || 0
+        console.debug(`read last shown chapter index ${idx} from local storage`)
         return this.repo.find_chapter_by_id(idx)
     }
 
@@ -117,7 +122,7 @@ class Mahabharath {
     new_section(data) {
         var section = new Section(data)
         section.idx = this.repo.sections.length
-        section.label = roman_numeral(section.idx+1)
+        section.label = roman_numeral(section.idx+1, true)
         section.root = this.options.root.content + '/' + section.root
         section.url  = `${section.root}/${section.src}`
         console.debug(`new_section ${section.label}  [${section.title}] ${section.root}`)
@@ -126,6 +131,8 @@ class Mahabharath {
     }
     /**
      * adds the chapter. All chapters are maintained by the repo.
+     * every chapter refers to its section
+     * the chapter url is section root prepended to chapter source
      * The chapters are added to the repo in order.
      * @param {Chapter} chapter 
      */
@@ -150,17 +157,18 @@ class Mahabharath {
             return
         } 
         console.debug(`show chapter ${chapter.toString()}`)
+        console.debug(`saving chapter index ${chapter.idx} in local storage`)
+        localStorage.setItem('chapter-idx', chapter.idx)
         $('#section-title').text(chapter.section.title)
         $('#chapter-title').text(chapter.title)
-        $('#breadcrumbs').text(`${chapter.section.title}/${chapter.title}`)
+        //$('#breadcrumbs').text(`${chapter.section.title}/${chapter.title}`)
         $('#status').text(chapter.title)
         // the action handlers are set after the content is loaded into the view
         var ctx = this
         $('#chapter-main').load(chapter.url, function() {
+            // glossary-term element when cicked shows the href content in the glossary secttion
             $(".glossary-term").on("click", function() {
-                var href  = $(this).attr('href')
-                var title = $(this).text()
-                ctx.show_glossary(title, href)
+                ctx.show_glossary($(this))
             })
         })
         $(".chapter-next-button").off('click')
@@ -192,14 +200,14 @@ class Mahabharath {
         })
     }
 
-    show_glossary = function(title, href) {
-        console.log(`glossary-term [${title}] clicked. show ${href}`)
-        $('#glossary-popup').load(this.options.glossary_dir+'/'+href, function(){
-            $(this).dialog({modal:false,
-                title: title,
-                autoOpen: true})
-        })
+    show_glossary($el) {
+        var title = $el.attr('title') || $el.text()
+        var href  = $el.attr('href')  || `title.html`
+        href = `${this.options.root.glossary}/${href}`
+        $('#glossary-title').text(title)
+        $('#glossary-content').load(href)
     }
+    
 
     /**
      * Renders titles of all sections and their chapters to the given element
@@ -252,8 +260,15 @@ class Mahabharath {
         for (var i =0; i < section.chapters.length; i++) {
             var chapter = section.chapters[i]
             var $li = $('<li>')
+            $li.addClass('w3-tooltip')
             $ul.append($li)
+            // list item shows the title of each chapter. The chapter title if long
+            // is ecliipiszed. Then the tooltip shows the entire title
             $li.text(chapter.label + ' ' + chapter.title)
+            var $tooltip = $('<span>')
+            $tooltip.addClass('w3-text w3-tag')
+            $tooltip.text(chapter.title)
+            $li.append($tooltip)
             $li.on('click', function() {
                 // IMPORTANT
                 return false
@@ -264,12 +279,18 @@ class Mahabharath {
     }
 }
 const ROMAN_NUMERALS = [undefined,
-                        'i', 'ii', 'iii', 'iv', 'iv', 'v',
+                        'i', 'ii', 'iii', 'iv', 'v',
                         'vi', 'vii', 'viii', 'ix', 'x',
                         'xi', 'xii', 'xiii', 'xiv', 'xv',
                         'xvi', 'xvii', 'xviii', 'xix', 'xx']
-function roman_numeral(num) {
-        return ROMAN_NUMERALS[num]
+const ROMAN_NUMERALS_CAPITAL = [undefined,
+                            'I', 'II', 'III', 'IV', 'V',
+                            'VI', 'VII', 'VIII', 'IX', 'X',
+                            'XI', 'XII', 'XIII', 'XIV', 'XV',
+                            'XVI', 'XVII', 'XVIII', 'XIX', 'XX']
+    
+function roman_numeral(num, capitalized) {
+        return capitalized ? ROMAN_NUMERALS_CAPITAL[num] : ROMAN_NUMERALS[num]
 }
 
 Chapter.prototype.toString = function () {

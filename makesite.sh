@@ -1,6 +1,13 @@
 #/bin/sh
+# --------------------------------------------------------------
+# Copies the entire Mahabharata website to AWS EC2 by rsync
+# Requires
+#  digital-artisar.cer
+#  exclude-rsync.txt
+# --------------------------------------------------------------
 REMOTE_USER=ubuntu
-REMOTE_HOST=184.72.3.220
+#REMOTE_HOST=184.72.3.220
+REMOTE_HOST=digital-artisan.org
 PEM_FILE=digital-artisan.cer
 
 # -------------------------------------------
