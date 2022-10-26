@@ -266,7 +266,8 @@ class Mahabharath {
             // is ecliipiszed. Then the tooltip shows the entire title
             $li.text(chapter.label + ' ' + chapter.title)
             var $tooltip = $('<span>')
-            $tooltip.addClass('w3-text w3-tag')
+            $tooltip.addClass('w3-text w3-tag w3-text-red')
+            $tooltip.css("position:absolute;left:-20px;bottom:18px")
             $tooltip.text(chapter.title)
             $li.append($tooltip)
             $li.on('click', function() {
