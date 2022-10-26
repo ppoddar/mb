@@ -293,6 +293,22 @@ function roman_numeral(num, capitalized) {
         return capitalized ? ROMAN_NUMERALS_CAPITAL[num] : ROMAN_NUMERALS[num]
 }
 
+function show_dialog($el) {
+    var page = $el.attr('page')
+    var title = $el.attr('title')
+    var $dialog = $('<div>')
+    $('body').append($dialog)
+    $dialog.load(page, function() {
+        $(this).dialog({
+            autoOpen:true,
+            title: title,
+            width:600, height:400,
+            maxWidth:800, maxHeight:500
+        })
+
+    })
+}
+
 Chapter.prototype.toString = function () {
     return `${this.idx} [${this.section.title}] [${this.title}] ${this.url}`
 }

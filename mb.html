@@ -8,7 +8,7 @@
     <script src="script/mb.js"></script>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/blitzer/jquery-ui.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/sunny/jquery-ui.min.css"> 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/mb.css">
@@ -66,6 +66,9 @@
                 var $menu = $('#menu-content')
                 if (!$menu.hasClass('w3-hide')) $menu.addClass('w3-hide')
             })
+            $('.dialog-page').on('click', function() {
+                show_dialog($(this))
+            })
             mb.show_toc($('#toc'))
             // show the last shown chapter
             var firstChapter = mb.read_current_chapter_from_local_storage()
@@ -91,9 +94,9 @@
         <div class="w3-dropdown-click w3-right" >
                 <button class="w3-right material-icons" id="menu-more">more_vert</button>
                 <div class="'w3-dropdown-content w3-bar-block w3-border w3-hide" id="menu-content">
-                    <a href="#" class="w3-bar-item w3-button">Author's Note</a>
-                    <a href="#" class="w3-bar-item w3-button">About</a>
-                    <a href="#" class="w3-bar-item w3-button">Help</a>
+                    <p page="content/authors_note.html" class="w3-bar-item dialog-page">Author's Note</p>
+                    <p page="content/about_mb.html"     class="w3-bar-item dialog-page">About</p>
+                    <p page="content/help_mb.html"      class="w3-bar-item dialog-page">Help</p>
                 </div>
             </div>
     </div>
