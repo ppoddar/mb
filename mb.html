@@ -53,12 +53,27 @@
                 mb.show_chapter(chapter)
             })
 
+            $('#menu-more').on('click', function(e) {
+                e.stopPropagation()
+                var $menu = $('#menu-content')
+                if ($menu.hasClass('w3-hide')) {
+                    $menu.removeClass('w3-hide')
+                } else {
+                    $menu.addClass('w3-hide')
+                }
+            }) 
+            $('body').on('click', function(){
+                var $menu = $('#menu-content')
+                if (!$menu.hasClass('w3-hide')) $menu.addClass('w3-hide')
+            })
             mb.show_toc($('#toc'))
             // show the last shown chapter
             var firstChapter = mb.read_current_chapter_from_local_storage()
             mb.show_chapter(firstChapter)
         })
 
+        
+        
     </script>
 </head>
 
@@ -70,11 +85,17 @@
             <span class="w3-xxxlarge">Mahabharath</span><br>
             <span class="w3-xxlarge" id="section-title"></span><br>
         </div>
-        <span class="w3-bar-item w3-right material-icons" id="menu-more">more_vert</span>
-        <span class="w3-bar-item w3-right material-icons" id="menu-search"
-            style="padding-right:4em;">search</span>
-        <input class="w3-bar-item w3-right" id="search-item" 
-            placeholder="find character/place">
+        
+        <input class="w3-bar-item" id="search-item" placeholder="find character/place">
+        <span class="w3-bar-item material-icons" id="menu-search" style="padding-right:4em;">search</span>
+        <div class="w3-dropdown-click w3-right" >
+                <button class="w3-right material-icons" id="menu-more">more_vert</button>
+                <div class="'w3-dropdown-content w3-bar-block w3-border w3-hide" id="menu-content">
+                    <a href="#" class="w3-bar-item w3-button">Author's Note</a>
+                    <a href="#" class="w3-bar-item w3-button">About</a>
+                    <a href="#" class="w3-bar-item w3-button">Help</a>
+                </div>
+            </div>
     </div>
 
     <div class="'w3-row-padding">
@@ -100,7 +121,7 @@
     
 
     <div id="status-bar" class="w3-bar" style="position: fixed; bottom:0;background-color: #D4AF37;">
-        <span class="w3-bar-item w3-right">Copyright</span>
+        <span class="w3-bar-item w3-right">&copy; Pinaki Poddar 2022-30</span>
     </div>    
     
     
