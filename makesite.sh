@@ -24,3 +24,5 @@ rsync -avz --omit-dir-times \
       -e "ssh -i $PEM_FILE" \
       --exclude-from=exclude-rsync.txt \
       $SOURCE $REMOTE_USER@$REMOTE_HOST:$REMOTE_DEST
+
+open https://$REMOTE_HOST/mb

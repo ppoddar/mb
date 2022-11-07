@@ -162,6 +162,7 @@ class Mahabharath {
         localStorage.setItem('chapter-idx', chapter.idx)
         $('#section-title').text(chapter.section.title)
         $('#chapter-title').text(chapter.title)
+        $('#chapter-title').css('font-weight', 'bold')
         $('#status').text(chapter.title)
         // the action handlers are set after the content is loaded into the view
         var ctx = this
@@ -203,12 +204,11 @@ class Mahabharath {
      * @param {jQuery} $el 
      */
     show_glossary($el) {
-        var title = $el.attr('title') || $el.text()
         var href  = $el.attr('href')
         // the glossary content href is w.r.t. the root of glossary
         href = `${this.options.root.glossary}/${href}`
         console.debug(`loading glossary content from ${href}`)
-        popup_dialog(title, href, false)
+        popup_dialog(href, {title:$el.attr('title') || $el.text()})
     }
     
 
@@ -297,6 +297,10 @@ function roman_numeral(num, capitalized) {
         return capitalized ? ROMAN_NUMERALS_CAPITAL[num] : ROMAN_NUMERALS[num]
 }
 
+const DEFAULT_DIALOG_OPTIONS = {autoOpen:true, modal:false, 
+    width:600, height:400,
+    maxWidth:800, maxHeight:500
+}
 /**
  * Shows a popup dialog. 
  * 
@@ -306,19 +310,13 @@ function roman_numeral(num, capitalized) {
  */
     // TODO: Position the popup based on how many popup are open
     // TODO: Mimimize non-modal popup
-function popup_dialog(title, href, isModal) {
+function popup_dialog(href, options) {
     // create a DIV and append it to DOM
     var $dialog = $('<div>')
     $('body').append($dialog)
     // load href on the created DIV and show the DIC as a dialog after loading is complete
     $dialog.load(href, function() {
-        $(this).dialog({
-            autoOpen:true,
-            modal: isModal,
-            title: title,
-            width:600, height:400,
-            maxWidth:800, maxHeight:500
-        })
+        $(this).dialog(Object.assign(options, DEFAULT_DIALOG_OPTIONS))
     })
 }
 

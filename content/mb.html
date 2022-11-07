@@ -65,9 +65,8 @@
             // Menu items are marked with 'dialog-page' class. 
             // On click, the page is shown in a dialog 
             $('.dialog-page').on('click', function() {
-                var href = $(this).attr('href')
-                var title = $(this).attr('title') || $(this).text()
-                popup_dialog(title, href, false)
+                popup_dialog($(this).attr('href'), 
+                    {title: $(this).attr('title') || $(this).text()})
             })
             // populate the TOC on the left
             mb.show_toc($('#toc'))
@@ -81,7 +80,8 @@
 <body>
     <!-- The HTML element identifiers are referrred by mb.js script -->
     <div id="header-main" class="'w3-bar w3-padding-16" style="background-color: #D4AF37;">
-        <a href='index.html'><img class="w3-bar-item w3-margin" src="images/mb-logo.jpeg"></a>
+        <!-- the main page (index.html) is two level up -->
+        <a href='/mb/index.html'><img class="w3-bar-item w3-margin" src="images/mb-logo.jpeg"></a>
         <div class="w3-bar-item" style="width:32em;display:inline-block">
             <span class="w3-xxxlarge">Mahabharath</span><br>
             <span class="w3-xxlarge" id="section-title"></span><br>
@@ -105,7 +105,7 @@
             <div id="toc"></div>
         </div>
         <div class="w3-col m8 l8">
-            <span class="w3-text-yellow w3-padding" id="chapter-title"></span>
+            <span class="w3-xxlarge w3-text-black w3-padding" id="chapter-title"></span>
             <div id="navigation-button" style="margin-left:auto;margin-right:0;display:inline">
                 <span class="material-icons navigation-button" id="chapter-prev-button">arrow_left</span>
                 <span class="material-icons navigation-button" id="chapter-next-button">arrow_right</span>
