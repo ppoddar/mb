@@ -34,12 +34,9 @@ class Repository {
      * @returns a chapter or the 0-th chapter
      */
     find_chapter_by_id(idx) {
-        try {
-            return this.chapters[idx]
-        } catch (err) {
-            console.warn(`no chapter at index ${idx}. Returning the first chapter`)
-            return this.chapters[0]
-        }
+        if (idx < 0) return this.chapters[0]
+        if (idx >= this.chapters.length) return this.chapters[0]
+        return this.chapters[idx]
     }
 
     debug() {
@@ -167,21 +164,24 @@ class Mahabharath {
         // the action handlers are set after the content is loaded into the view
         var ctx = this
         $('#chapter-main').load(chapter.url, function() {
-            // glossary-term element when cicked pops-up the href content 
-            $(".glossary-term").on("click", function() {
+            // glossary element when cicked pops-up the href content 
+            $(".glossary").on("click", function() {
                 ctx.show_glossary($(this))
             })
         })
         $('#chapter-next-button').data('chapter-idx', chapter.idx+1)
+        $('#chapter-next-tooltip').data('chapter-idx', chapter.idx+1)
         $('#chapter-prev-button').data('chapter-idx', chapter.idx-1)
+        $('#chapter-prev-tooltip').data('chapter-idx', chapter.idx-1)
+
+        $('#chapter-next-tooltip').text(ctx.repo.find_chapter_by_id(chapter.idx+1).title)
+        $('#chapter-prev-tooltip').text(ctx.repo.find_chapter_by_id(chapter.idx-1).title)
         
         // remove all past action handlers from naviagtion button
         $('.navigation-button').off('click')
         $(".navigation-button").on('click', function() {
-            var id = $(this).attr('id')
             var chapter_idx = $(this).data('chapter-idx') // get the chapter associated with the button
             var chapter_navigated = ctx.repo.find_chapter_by_id(chapter_idx)
-            console.debug(`clicked ${id} button. bound chapter ${chapter_idx} [${chapter_navigated.label}]`)
             ctx.show_chapter(chapter_navigated)
             return false // IMPORTANT 
         })
@@ -204,9 +204,10 @@ class Mahabharath {
      * @param {jQuery} $el 
      */
     show_glossary($el) {
-        var href  = $el.attr('href')
-        // the glossary content href is w.r.t. the root of glossary
+        var href  = $el.attr('href') || "missing.html"
         href = `${this.options.root.glossary}/${href}`
+        
+        // the glossary content href is w.r.t. the root of glossary
         console.debug(`loading glossary content from ${href}`)
         popup_dialog(href, {title:$el.attr('title') || $el.text()})
     }

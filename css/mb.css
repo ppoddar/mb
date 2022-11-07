@@ -5,8 +5,8 @@ section:first-child:first-letter {
     font-size: 4em;
   }
 
-  .glossary-term {
-    color: blue;
+  .glossary {
+    color: green;
     font-style: italic;
   }
 
@@ -14,8 +14,24 @@ section:first-child:first-letter {
     padding: 1em;
     background-color: #DDDDDD;
     border: 1pt black solid;
-    margin-left: 8em;
+    border-radius: 1em;
+    margin-left: 2em;
     margin-top: 2em;
     margin-bottom: 2em;
-    border-radius: 1em;
   }
+
+  .jest {
+    opacity: 0.5;
+    color: green;
+  }
+
+  hr {
+  display:block;
+  border:none;
+  height:20px;
+  background-image:url('../content/images/divider.gif');
+} 
+.subchapter {
+  font-weight: bold;
+  font-size: 1.2em;
+}

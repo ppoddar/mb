@@ -106,15 +106,21 @@
         </div>
         <div class="w3-col m8 l8">
             <span class="w3-xxlarge w3-text-black w3-padding" id="chapter-title"></span>
-            <div id="navigation-button" style="margin-left:auto;margin-right:0;display:inline">
-                <span class="material-icons navigation-button" id="chapter-prev-button">arrow_left</span>
-                <span class="material-icons navigation-button" id="chapter-next-button">arrow_right</span>
+            <div style="margin-left:auto;margin-right:0;display:inline">
+                <p class="w3-tooltip">
+                    <span id="chapter-prev-button" class="navigation-button material-icons">arrow_left</span>
+                    <span id="chapter-prev-tooltip" class="navigation-button w3-text w3-tag"></span>
+                </p>
+                <p class="w3-tooltip">
+                    <span id="chapter-next-button" class="navigation-button material-icons">arrow_right</span>
+                    <span id="chapter-next-tooltip" class="navigation-button w3-text w3-tag"></span>
+                </p>
+                <hr>
             </div>
             <div id="chapter-main" class="w3-white w3-margin w3-padding"></div>
         </div>
     </div>
     
-
     <div id="status-bar" class="w3-bar" style="position: fixed; bottom:0;background-color: #D4AF37;">
         <span class="w3-bar-item w3-right">&copy; Pinaki Poddar 2022-30</span>
     </div>    
