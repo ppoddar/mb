@@ -90,9 +90,9 @@ class Mahabharath {
         console.debug(`creating Mahabharatha...`)
         this.options = {
             logo: 'mb-logo.jpeg',
-            root : {content: 'content/chapter', 
-                   glossary: 'content/glossary',
-                   images: '../../images' }
+            root : {content: 'chapter', 
+                   glossary: 'glossary',
+                   images:   'images' }
         }
         this.repo = new Repository()
     }
@@ -158,37 +158,33 @@ class Mahabharath {
         } 
         console.debug(`show chapter ${chapter.toString()}`)
         console.debug(`saving chapter index ${chapter.idx} in local storage`)
+        // save chapter being rendered in the local storage. This acts like a bookmark
         localStorage.setItem('chapter-idx', chapter.idx)
         $('#section-title').text(chapter.section.title)
         $('#chapter-title').text(chapter.title)
-        //$('#breadcrumbs').text(`${chapter.section.title}/${chapter.title}`)
         $('#status').text(chapter.title)
         // the action handlers are set after the content is loaded into the view
         var ctx = this
         $('#chapter-main').load(chapter.url, function() {
-            // glossary-term element when cicked shows the href content in the glossary secttion
+            // glossary-term element when cicked pops-up the href content 
             $(".glossary-term").on("click", function() {
                 ctx.show_glossary($(this))
             })
         })
-        $(".chapter-next-button").off('click')
-        $(".chapter-next-button").on('click', function() {
-            console.debug(`next button clicked. current chapter ${chapter.idx} [${chapter.label}]`)
-            var next = ctx.repo.find_chapter_by_id(chapter.idx+1)
-            console.debug(`next chapter ${next.idx} [${next.label}]`)
-            ctx.show_chapter(next)
-            ctx.show_status($(this), next.title, chapter.title)
+        $('#chapter-next-button').data('chapter-idx', chapter.idx+1)
+        $('#chapter-prev-button').data('chapter-idx', chapter.idx-1)
+        
+        // remove all past action handlers from naviagtion button
+        $('.navigation-button').off('click')
+        $(".navigation-button").on('click', function() {
+            var id = $(this).attr('id')
+            var chapter_idx = $(this).data('chapter-idx') // get the chapter associated with the button
+            var chapter_navigated = ctx.repo.find_chapter_by_id(chapter_idx)
+            console.debug(`clicked ${id} button. bound chapter ${chapter_idx} [${chapter_navigated.label}]`)
+            ctx.show_chapter(chapter_navigated)
             return false // IMPORTANT 
         })
         
-        $(".chapter-prev-button").off('click')
-        $(".chapter-prev-button").on('click', function() {
-            var prev = ctx.repo.find_chapter_by_id(chapter.idx-1)
-            ctx.show_chapter(prev)
-            ctx.show_status($(this), prev.title, chapter.title)
-            return false // IMPORTANT 
-
-        })
     }
 
     show_status = function($button, text1, text2) {
@@ -200,12 +196,19 @@ class Mahabharath {
         })
     }
 
+    /**
+     * A glossary term is shown as a non-modal popup dialog. 
+     * The glossary term HTML element specifies 'href' content.
+     *  
+     * @param {jQuery} $el 
+     */
     show_glossary($el) {
         var title = $el.attr('title') || $el.text()
-        var href  = $el.attr('href')  || `title.html`
+        var href  = $el.attr('href')
+        // the glossary content href is w.r.t. the root of glossary
         href = `${this.options.root.glossary}/${href}`
-        $('#glossary-title').text(title)
-        $('#glossary-content').load(href)
+        console.debug(`loading glossary content from ${href}`)
+        popup_dialog(title, href, false)
     }
     
 
@@ -294,19 +297,28 @@ function roman_numeral(num, capitalized) {
         return capitalized ? ROMAN_NUMERALS_CAPITAL[num] : ROMAN_NUMERALS[num]
 }
 
-function show_dialog($el) {
-    var page = $el.attr('page')
-    var title = $el.attr('title')
+/**
+ * Shows a popup dialog. 
+ * 
+ * @param {jQuery} $el the jQuery element. 
+ * The 'href' attribute: content of the popup
+ * 
+ */
+    // TODO: Position the popup based on how many popup are open
+    // TODO: Mimimize non-modal popup
+function popup_dialog(title, href, isModal) {
+    // create a DIV and append it to DOM
     var $dialog = $('<div>')
     $('body').append($dialog)
-    $dialog.load(page, function() {
+    // load href on the created DIV and show the DIC as a dialog after loading is complete
+    $dialog.load(href, function() {
         $(this).dialog({
             autoOpen:true,
+            modal: isModal,
             title: title,
             width:600, height:400,
             maxWidth:800, maxHeight:500
         })
-
     })
 }
 
