@@ -24,7 +24,13 @@ class Repository{
     }
 
     next_chapter(chapter) {
-        return this.find_chapter(chapter.parva.index, chapter.index)
+        var idx1 = chapter.parva.index
+        var idx2 = chapter.index+1
+        if (chapter.index+1>=chapter.parva.chapters.length) {
+            idx1 = chapter.parva.index+1
+            idx2 = 0
+        }
+        return this.find_chapter(idx1, idx2)
     }
 
     

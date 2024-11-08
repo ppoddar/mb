@@ -45,12 +45,14 @@
             $('#chapter > #title').text(chapter.label+' '+chapter.title)
             $('#chapter > #content').load(chapter.url, function(){
                 var next_chapter=mb.repo.next_chapter(chapter)
-                $('#next-chapter').on('click', show_chapter.bind(mb, next_chapter))
-                return  false
-            })}
-        })
+                $('#next-chapter').on('click', function(){
+                    mb.show_chapter(next_chapter)
+                    return false
+                }
+            )
+        })}
         
-          
+    })
 
         </script>
     </head>
