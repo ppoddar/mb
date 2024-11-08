@@ -64,7 +64,7 @@ class Mahabharatha{
         this.repo = new Repository({root:'content'})
         var adi  = this.repo.add_parva({title:'Adi Parva', root: 'adi'})
         var vana = this.repo.add_parva({title:'Vana Parva', root: 'vana'})
-        adi.add_chapter({title:'The Kuru clan',     src:'00-kuru-clan.html'})
+        adi.add_chapter({title:'The Kuru clan',     src:'00_kuru_clan.html'})
         vana.add_chapter({title:'Moy builds palace',src:'00-moy-builds-palace.html' })
     }
 }
