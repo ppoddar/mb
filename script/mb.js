@@ -65,6 +65,16 @@ class Mahabharatha{
         var adi  = this.repo.add_parva({title:'Adi Parva', root: 'adi'})
         var vana = this.repo.add_parva({title:'Vana Parva', root: 'vana'})
         adi.add_chapter({title:'The Kuru clan',     src:'00_kuru_clan.html'})
+        adi.add_chapter({title:'Banished from the heaven',     src:'01_banished_from_heaven.html'})
+        adi.add_chapter({title:'Ganga makes a pact',     src:'02_ganga_makes_a_pact.html'})
+        adi.add_chapter({title:'Babies floated in river',     src:'03_babies_floated in_river.html'})
+        adi.add_chapter({title:'The lost son returns',     src:'05_lost_son_returns.html'})
+        adi.add_chapter({title:'A marriage proposal',     src:'06_marriage_prposal.html'})
+        adi.add_chapter({title:'Visma elopes the brides',     src:'00_kuru_clan.html'})
+        adi.add_chapter({title:'Surrogate birth',     src:'00_kuru_clan.html'})
+        adi.add_chapter({title:'Vyas comes to rescue',     src:'00_kuru_clan.html'})
+        adi.add_chapter({title:'The birth of kurus',     src:'00_kuru_clan.html'})
+        adi.add_chapter({title:'The death of Pandu',     src:'00_kuru_clan.html'})
         vana.add_chapter({title:'Moy builds palace',src:'00-moy-builds-palace.html' })
     }
 }
