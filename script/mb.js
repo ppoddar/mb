@@ -63,24 +63,26 @@ class Chapter{
     }
 }
 
-const roman_numeral = ["I","II","III", "IV", "V", "VI","VII","VIII","IX","X","XI","XII"]
+const roman_numeral = ["I","II","III", "IV", "V", "VI","VII","VIII","IX","X","XI","XII", "XIII", "XVI", "XV"]
 
 class Mahabharatha{
     constructor(){
         this.repo = new Repository({root:'content'})
         var adi  = this.repo.add_parva({title:'Adi Parva', root: 'adi'})
         var vana = this.repo.add_parva({title:'Vana Parva', root: 'vana'})
-        adi.add_chapter({title:'The Kuru clan',     src:'00_kuru_clan.html'})
-        adi.add_chapter({title:'Banished from the heaven',     src:'01_banished_from_heaven.html'})
-        adi.add_chapter({title:'Ganga makes a pact',     src:'02_ganga_makes_a_pact.html'})
-        adi.add_chapter({title:'Babies floated in river',     src:'03_babies_floated in_river.html'})
-        adi.add_chapter({title:'The lost son returns',     src:'05_lost_son_returns.html'})
-        adi.add_chapter({title:'A marriage proposal',     src:'06_marriage_prposal.html'})
-        adi.add_chapter({title:'Visma elopes the brides',     src:'00_kuru_clan.html'})
-        adi.add_chapter({title:'Surrogate birth',     src:'00_kuru_clan.html'})
-        adi.add_chapter({title:'Vyas comes to rescue',     src:'00_kuru_clan.html'})
-        adi.add_chapter({title:'The birth of kurus',     src:'00_kuru_clan.html'})
-        adi.add_chapter({title:'The death of Pandu',     src:'00_kuru_clan.html'})
-        vana.add_chapter({title:'Moy builds palace',src:'00-moy-builds-palace.html' })
+        adi.add_chapter({title:'The Kuru clan',                     src:'00_kuru_clan.html'})
+        adi.add_chapter({title:'Banished from the heaven',          src:'01_banished_from_heaven.html'})
+        adi.add_chapter({title:'Ganga makes a pact',                src:'02_ganga_makes_a_pact.html'})
+        adi.add_chapter({title:'Babies floated in river',           src:'03_babies_floated in_river.html'})
+        adi.add_chapter({title:'The lost son returns',              src:'05_lost_son_returns.html'})
+        adi.add_chapter({title:'A marriage proposal',               src:'06_marriage_proposal.html'})
+        adi.add_chapter({title:'Visma elopes the brides',           src:'08_visma_elopes_brides.html'})
+        adi.add_chapter({title:'Surrogate birth',                   src:'09_surrogate_birth.html'})
+        adi.add_chapter({title:'Vyas comes to rescue',              src:'10_vyas_comes_to_rescue.html'})
+        adi.add_chapter({title:'The birth of kurus',                src:'11_birth_of_kurus.html'})
+        adi.add_chapter({title:'The death of Pandu',                src:'13_death_of_pandu.html'})
+        adi.add_chapter({title: 'The murder attempt on Bheema',     src:'14_bheema_murder_attempt.html'})
+        adi.add_chapter({title: 'Drona trains the princes',         src:'15_drona_trains_princes.html'})
+        vana.add_chapter({title:'Moy builds palace',                src:'00-moy-builds-palace.html' })
     }
 }

@@ -26,15 +26,22 @@
                     var $li = $('<li>')
                     var  p  = repo.parvas[i]
                         $li.text(p.label + ' ' + p.title)
-                    show_parva(p, $li)
+                        var $chapters = $("<ul>")
+                        $li.append($chapters)    
+                    show_parva(p, $chapters)
                     $ul.append($li)
                 }
            }
 
-           function show_parva (parva){
+           function show_parva (parva, $ul){
             for (var i=0; i<parva.chapters.length;i++){
                 var ch = parva.chapters[i]
-                show_chapter(ch)
+                var $li = $('<li>')
+                $li.text(`${ch.label} ${ch.title}`)
+                $ul.append($li)    
+                $li.on('click', function(){show_chapter(ch)})
+                //$li.on('click', this.alert.bind(this,'show chapter'))
+                
             }
            }
 
@@ -45,8 +52,12 @@
             $('#chapter > #title').text(chapter.label+' '+chapter.title)
             $('#chapter > #content').load(chapter.url, function(){
                 var next_chapter=mb.repo.next_chapter(chapter)
-                $('#next-chapter').on('click', function(){
-                    mb.show_chapter(next_chapter)
+                $('#next-chapter').on('click', function(e){
+                    e.preventDefault()
+                    e.stopPropagation()
+                    console.log(`show_chapter ${next_chapter.parva.index}${next_chapter.index}`)
+                    $(this).show_chapter.bind((this),next_chapter)
+                    off('click', '#next-chapter')
                     return false
                 }
             )
