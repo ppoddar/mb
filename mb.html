@@ -17,8 +17,10 @@
             
             var mb = new Mahabharatha({root:'content'})
             show_repository(mb.repo, $('#toc'))
-            show_chapter(mb.repo.find_chapter(localStorage.getItem('parva.index')||0, localStorage.getItem('chapter.index')||0))
-        
+            var chapter = mb.repo.find_chapter(localStorage.getItem('parva.index')||0, localStorage.getItem('chapter.index')||0)
+            $("#toc").data('chapter', chapter)
+            $('#toc').on('click', show_chapter)
+            $('#toc').trigger('click')
         
         
            function show_repository(repo, $ul){
@@ -38,26 +40,40 @@
                 var ch = parva.chapters[i]
                 var $li = $('<li>')
                 $li.text(`${ch.label} ${ch.title}`)
-                $ul.append($li)    
-                $li.on('click', function(){show_chapter(ch)})
+                $li.data('chapter', ch)
+                $ul.append($li)   
+                $li.data('chapter', ch) 
+                $li.data('next', i+1)
+                $li.on('click', function(e){
+                    console.log('clicked ' + $(this).data('chapter').title)
+                    show_chapter(e)
+                    return false
+                })
                 //$li.on('click', this.alert.bind(this,'show chapter'))
                 
             }
            }
-
-           function show_chapter(chapter) {
+           /*  displays title and content of a chapter.
+           The chapter must be to data() of an HTML element. Then trigger() the element or call
+           directly from the element's event handler function.
+           */
+           function show_chapter(e) {
+            var chapter = $(e.target).data('chapter')
             console.log('showing chapter title=' + chapter.title + 'url=' + chapter.url + 'parva url=' + chapter.parva.url)
             localStorage.setItem('parva-index', chapter.parva.index)
             localStorage.setItem('chapter-index', chapter.index)
             $('#chapter > #title').text(chapter.label+' '+chapter.title)
             $('#chapter > #content').load(chapter.url, function(){
+                $('#chapter > #title').get(0).scrollIntoView()
                 var next_chapter=mb.repo.next_chapter(chapter)
+                $('#next-chapter').data('chapter', next_chapter)
                 $('#next-chapter').on('click', function(e){
                     e.preventDefault()
                     e.stopPropagation()
-                    console.log(`show_chapter ${next_chapter.parva.index}${next_chapter.index}`)
-                    $(this).show_chapter.bind((this),next_chapter)
-                    off('click', '#next-chapter')
+                    console.log(`show next chapter ${next_chapter.parva.index}:${next_chapter.index}`)
+                    show_chapter(e)
+                    //off('click', '#next-chapter')
+                   
                     return false
                 }
             )
