@@ -29,9 +29,23 @@ class Repository{
         if (chapter.index+1>=chapter.parva.chapters.length) {
             idx1 = chapter.parva.index+1
             idx2 = 0
+            console.log('next chapter of + chapter + belongs to next parva ' + idx1 + ":" + idx2)
         }
         return this.find_chapter(idx1, idx2)
     }
+    prev_chapter(chapter) {
+        var idx1 = chapter.parva.index
+        var idx2 = chapter.index+1
+        if (chapter.index-1<0) {
+            idx1 = chapter.parva.index-1
+            if (idx1 <0 )
+                idx1 = this.parvas.length-1
+            idx2 = 0
+            console.log('previous chapter of' + chapter + ' belongs to next parva ' + idx1 + ":" + idx2)
+        }
+        return this.find_chapter(idx1, idx2)
+    }
+
 
     
 }
@@ -73,7 +87,7 @@ class Mahabharatha{
         adi.add_chapter({title:'The Kuru clan',                     src:'00_kuru_clan.html'})
         adi.add_chapter({title:'Banished from the heaven',          src:'01_banished_from_heaven.html'})
         adi.add_chapter({title:'Ganga makes a pact',                src:'02_ganga_makes_a_pact.html'})
-        adi.add_chapter({title:'Babies floated in river',           src:'03_babies_floated in_river.html'})
+        adi.add_chapter({title:'Babies floated in river',           src:'03_babies_floated_in_river.html'})
         adi.add_chapter({title:'The lost son returns',              src:'05_lost_son_returns.html'})
         adi.add_chapter({title:'A marriage proposal',               src:'06_marriage_proposal.html'})
         adi.add_chapter({title:'Visma elopes the brides',           src:'08_visma_elopes_brides.html'})

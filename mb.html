@@ -66,6 +66,7 @@
             $('#chapter > #content').load(chapter.url, function(){
                 $('#chapter > #title').get(0).scrollIntoView()
                 var next_chapter=mb.repo.next_chapter(chapter)
+                
                 $('#next-chapter').data('chapter', next_chapter)
                 $('#next-chapter').on('click', function(e){
                     e.preventDefault()
@@ -73,9 +74,20 @@
                     console.log(`show next chapter ${next_chapter.parva.index}:${next_chapter.index}`)
                     show_chapter(e)
                     //off('click', '#next-chapter')
+                    return false
+                })
+                var prev_chapter=mb.repo.prev_chapter(chapter)
+                $('#prev-chapter').data('chapter', prev_chapter)
+                $('#prev-chapter').on('click', function(e){
+                    e.preventDefault()
+                    e.stopPropagation()
+                    console.log(`show prev chapter ${prev_chapter.parva.index}:${prev_chapter.index}`)
+                    show_chapter(e)
+                    //off('click', '#next-chapter')
                    
                     return false
                 }
+          
             )
         })}
         
@@ -93,6 +105,7 @@
             <div id="content">
             </div>
             <div class="w3-bar">
+                <div class="w3-bar-item w3-button w3-text-black" id="prev-chapter">back</div>
                 <div class="w3-bar-item w3-button w3-text-blue" id="next-chapter">more...</div>
                 <span class="w3-bar-item w3-right" id="copyright">&copy;Pinaki Poddar 2024-30</span>
             </div>
