@@ -7,11 +7,11 @@ toc {
 }
 
 #chapter #content{
-    border: solid red 1px;
+    border: solid black 1px;
     border-radius: 10px;
     height: auto;
     margin: 10 10 10 10;
-    padding: 1 1 1 1;
+    padding: 4 2 4 2;
 }
 
 #cover-image {
@@ -32,6 +32,17 @@ toc {
     font-family: cursive;
 }
 
+ul li  ul{ /* chapters list style */
+   list-style:none;
+   font-size: 0.75em;
+}
+
 .glossary {
     color: #00ff00;
 }
+
+hr.rounded {
+    border-top: 8px solid #bbb;
+    border-radius: 5px;
+}
+
