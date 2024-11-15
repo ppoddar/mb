@@ -44,8 +44,14 @@ ul li  ul{ /* chapters list style */
    font-size: 0.75em;
 }
 
-.glossary {
+span {
+    color: aqua;
+}
+span.glossary {
     color: #00ff00;
+}
+em {
+    color: blue;
 }
 
 hr.rounded {
