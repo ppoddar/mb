@@ -2,6 +2,7 @@ class Repository{
     constructor(options){
         this.options = options
         this.root = options['root']
+        this.glossary = options['glossary']
         this.parvas= []
     }
     add_parva(data) {
@@ -81,7 +82,7 @@ const roman_numeral = ["I","II","III", "IV", "V", "VI","VII","VIII","IX","X","XI
 
 class Mahabharatha{
     constructor(){
-        this.repo = new Repository({root:'content'})
+        this.repo = new Repository({root:'content', glossary:'glossary'})
         var adi  = this.repo.add_parva({title:'Adi Parva', root: 'adi'})
         var vana = this.repo.add_parva({title:'Vana Parva', root: 'vana'})
         adi.add_chapter({title:'The Kuru clan',                     src:'00_kuru_clan.html'})

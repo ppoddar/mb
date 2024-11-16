@@ -50,6 +50,10 @@ span {
 span.glossary {
     color: #00ff00;
 }
+
+span.place {
+    color: #903;
+}
 em {
     color: blue;
 }
@@ -66,5 +70,17 @@ hr.rounded {
     border: solid black 1px;
     border-radius: 6px;
     padding: 4 10 4 10;
+}
+
+aside {
+    width: 100%;
+    margin: 4em 1em 2em 2em;
+    background-color: black;
+    color:burlywood;
+}
+
+#home{
+    position: absolute;
+    visibility: visible;
 }
 

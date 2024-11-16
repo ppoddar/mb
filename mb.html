@@ -15,7 +15,7 @@
     <script>
     $(function(){
             
-            var mb = new Mahabharatha({root:'content'})
+            var mb = new Mahabharatha({root:'content', glossary:'glossary'})
             show_repository(mb.repo, $('#toc'))
             var chapter = mb.repo.find_chapter(localStorage.getItem('parva.index')||0, localStorage.getItem('chapter.index')||0)
             $("#toc").data('chapter', chapter)
@@ -65,6 +65,8 @@
             $('#chapter > #title').text(chapter.label+' '+chapter.title)
             $('#chapter > #content').load(chapter.url, function(){
                 $('#chapter > #title').get(0).scrollIntoView()
+                $('.glossary').on('click', show_glossary)
+
                 var next_chapter=mb.repo.next_chapter(chapter)
                 
                 $('#next-chapter').data('chapter', next_chapter)
@@ -86,34 +88,59 @@
                     //off('click', '#next-chapter')
                    
                     return false
+                })
+            }) // content load complete
+        } // show chapter complete    
+            
+            
+/* shows the glossary term in aside block 
+*/
+       function show_glossary(e) {
+            var $el = $(e.target)
+            var term = $el.text()
+            var url = `glossary/${term}.html`
+            console.log(`loading glossary term from [url]...`)
+            $('aside')[0].scrollIntoView()
+            $('aside').css('color', 'green')
+            $.ajax({url:url,
+                type:'HEAD',
+                success: function(){
+                    $('aside').load(url)
+                },
+                error: function(){
+                    console.log(`no glossary term from [url]...`)
+                    $('aside').text(`no information available on glossary item [${term}]`)
+                    $('aside').css('color', 'red')
                 }
-          
-            )
-        })}
+            })  
         
-    })
+    }})
 
-        </script>
+    </script>
     </head>
-<div class="w3-row">
-    <div class="w3-col m4 l3">
-        <ul style="list-style: none;"class="w3-small-text" id="toc"></ul>
-    </div>
-    <div class="w3-col m8 l9">
-        <div id="chapter">
-            <div id="title"></div>
-            <div id="content">
+    <body>
+        <img src='images/ganesha.ico' width=24px height=24px id="home">
+        <div class="w3-row">
+            <div class="w3-col m4 l3">
+                <ul style="list-style: none;"class="w3-small-text" id="toc"></ul>
+                <aside></aside>
             </div>
-            <div class="w3-bar">
-                <div class="w3-bar-item w3-button w3-text-black" id="prev-chapter">back</div>
-                <div class="w3-bar-item w3-button w3-text-blue" id="next-chapter">more...</div>
-                <span class="w3-bar-item w3-right" id="copyright">&copy;Pinaki Poddar 2024-30</span>
+            <div class="w3-col m8 l9">
+                <div id="chapter">
+                    <div id="title"></div>
+                    <div id="content">
+                    </div>
+                    <div class="w3-bar">
+                        <div class="w3-bar-item w3-button w3-text-black" id="prev-chapter">back</div>
+                        <div class="w3-bar-item w3-button w3-text-blue" id="next-chapter">more...</div>
+                        <span class="w3-bar-item w3-right" id="copyright">&copy;Pinaki Poddar 2024-30</span>
+                    </div>
+                </div>
             </div>
+
         </div>
-    </div>
-</div>
 
         
-            </div>
-    
+        </div>
+    </body>
 </html>
