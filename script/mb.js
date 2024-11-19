@@ -23,9 +23,30 @@
 class Repository {
     constructor() {
         console.debug(`creating empty content Repository...`)
-        this.chapters       = []
         this.sections       = []  
     }
+
+    /**
+     * Creates and adds a new section. 
+     * All sections are maintained by the repo.
+     * A section id is assigned and section url 
+     * The input section root is relative to the content root directory.
+     * The section root is appended to the root content directory to create an URL 
+     * The chapters will be added to the section later.
+     * @param {Section} section 
+     * 
+     * @return the new section added
+     */
+    new_section(data) {
+        var section = new Section(data)
+        section.idx = this.sections.length
+        section.label = roman_numeral[section.idx+1]
+        section.url  = `${this.docroot}/${this.options.root.content}/${section.root}`
+        console.debug(`new_section ${section.label}  [${section.title}] ${section.url}`)
+        this.repo.sections.push(section)
+        return section
+    }
+  
 
     /**
      * Find the chapter with given 0-based index.
@@ -33,8 +54,24 @@ class Repository {
      * @param {int} idx 0-based serial index of the chapters
      * @returns a chapter or the 0-th chapter
      */
-    find_chapter_by_id(idx) {
-        if (idx < 0) return this.chapters[0]
+    find_chapter_by_id(idx1, idx2) {
+        if (idx1 < 0 || idx1>=this.sections.length) 
+            console.log(`section index ${idx1} out of bounds }`)
+        return this.sections[idx1].chapters[idx2]
+
+    next_chapter(chapter){
+        var idx2 = chapter.index+1
+        if (idx2 >= this.sections[idx1].length) {
+            idx2 = 0
+            idx1 = 0
+        }
+
+        var idx1 = this.chapter.section.index+1
+        if (idx1>= this.sections.length) {
+            idx1 = 0
+        }
+    }
+            return this.chapters[0]
         if (idx >= this.chapters.length) return this.chapters[0]
         return this.chapters[idx]
     }
@@ -59,7 +96,6 @@ class Chapter {
      */
     constructor(data) {
         this.idx   = -1
-        this.label = data['label']
         this.title = data['title']
         this.src   = data['src']
         this.url   = ''
@@ -70,28 +106,76 @@ class Section {
     /**
      * creates a section. The index is not assigned at construction.
      * It is added when section is added 
-     * @param {object} data has label, title, root and src
+     * @param {object} data has title, root 
+     * title of the section displayed
+     * root path directory w.r.t docroot that stores all chapter source
      */
     constructor(data) {
         this.idx   = -1
-        this.label = data['label']
         this.title = data['title']
         this.root  = data['root']
-        this.src   = data['src']
         this.chapters = []
     }
+
+    /**
+     * adds the chapter to this section. All chapters are maintained by the repo indirectly.
+     * every chapter refers to its section.
+     * the chapter url is section root prepended to chapter source
+     * The chapters are added to the section in order.
+     * @param {Chapter} chapter 
+     */
+    add_chapter(chapter) {
+        chapter.section = this
+        chapter.url = `${this.url}/${chapter.src}`
+
+        section.chapters.push(chapter)
+        chapter.idx = section.chapters.length
+        chapter.label = `${section.label}.${roman_numeral(section.chapters.length)}`
+        chapter.url = `${section.root}/${chapter.src}`
+        console.debug(`add_chapter ${chapter.idx} [${chapter.label} ${chapter.title}] ${chapter.url}`)
+        this.repo.chapters.push(chapter)
+    }
+
 }
 // ************************************************************************
 class Mahabharath {
     constructor() {
         console.debug(`creating Mahabharatha...`)
         this.options = {
+            docroot:'content',
             logo: 'mb-logo.jpeg',
+            // root paths w.r.t docroot 
             root : {content: 'chapter', 
                    glossary: 'glossary',
                    images:   'images' }
         }
         this.repo = new Repository()
+
+        //     The content repository is populated statically
+            // The content URLs are hardcoded
+            // Add sections and chapters that refer to the content files on the server w.r.t sectiopn root
+            var adiParva  = mb.new_section(new Section({title:"Adi Parva", root:"adi"}))
+            var vanaParva = mb.new_section(new Section({title:"Vana Parva", root:"vana"}))
+            adiParva.add_chapter(new Chapter({title:"The Kuru Clan",           src:"00_kuru_clan.html"}))
+            adiParva.add_chapter(new Chapter({title:"Banished from Heaven",    src:"01_banished_from_heaven.html"}))
+            adiParva.add_chapter(new Chapter({title:"Ganga Makes a Pact",      src:"02_ganga_makes_a_pact.html"}))
+            adiParva.add_chapter(new Chapter({title:"Babies Floated in River", src:"03_babies_floated_in_river.html"}))
+            adiParva.add_chapter(new Chapter({title:"Curse of Octobasu",       src:"04_curse_of_octobasu.html"}))
+            adiParva.add_chapter(new Chapter({title:"The Lost Son Returns",    src:"05_lost_son_returns.html"}))
+            adiParva.add_chapter(new Chapter({title:"A Marriage Proposal",     src:"06_marriage_proposal.html"}))
+            adiParva.add_chapter(new Chapter({title:"Vishma Elopes the Brides",src:"08_vishma_elopes_brides.html"}))
+            adiParva.add_chapter(new Chapter({title:"Surrogate Birth",         src:"09_surrogate_birth.html"}))
+            adiParva.add_chapter(new Chapter({title:"Vyaas Comes to Rescue",   src:"10_vyaas_comes_to_rescue.html"}))
+            adiParva.add_chapter(new Chapter({title:"Birth of Kurus",          src:"11_birth_of_kurus.html"}))
+            adiParva.add_chapter(new Chapter({title:"The Death of Pandu",      src:"13_death_of_pandu.html"}))
+            adiParva.add_chapter(new Chapter({title:"Murder Attempt on Bheema",src:"14_bheema_murder_attempt.html"}))
+            adiParva.add_chapter(new Chapter({title:"Drona Trains the Princes",src:"15_drona_trains_princes.html"}))
+            
+            vanaParva.add_chapter(new Chapter({title:"Moy Builds Palace",       src:"01_moy_builds_palace.html"}))
+            
+            mb.repo.debug()
+         
+        
     }
     /**
      * The last shown chapter index is stored in local storage with 'chapter-idx' as key.
@@ -99,52 +183,14 @@ class Mahabharath {
      * @returns last shown chapter
      */
     read_current_chapter_from_local_storage = function() {
-        var idx = window.localStorage.getItem('chapter-idx') || 0
-        console.debug(`read last shown chapter index ${idx} from local storage`)
-        return this.repo.find_chapter_by_id(idx)
+        var idx1 = window.localStorage.getItem('section-idx') || 0
+        var idx2 = window.localStorage.getItem('chapter-idx') || 0
+        console.debug(`read last shown chapter index ${idx2} from local storage`)
+        return this.repo.find_chapter_by_id(idx1, idx2)
     }
 
     
-    /**
-     * Creates and adds a new section. 
-     * All sections are maintained by the repo.
-     * A section id is assigned and section url 
-     * The input section root is relative to the content root directory.
-     * The section root is appended to the root content directory to create an URL 
-     * The chapters will be added to the section later.
-     * @param {Section} section 
-     * 
-     * @return the new section added
-     */
-    new_section(data) {
-        var section = new Section(data)
-        section.idx = this.repo.sections.length
-        section.label = roman_numeral(section.idx+1, true)
-        section.root = this.options.root.content + '/' + section.root
-        section.url  = `${section.root}/${section.src}`
-        console.debug(`new_section ${section.label}  [${section.title}] ${section.root}`)
-        this.repo.sections.push(section)
-        return section
-    }
-    /**
-     * adds the chapter. All chapters are maintained by the repo.
-     * every chapter refers to its section
-     * the chapter url is section root prepended to chapter source
-     * The chapters are added to the repo in order.
-     * @param {Chapter} chapter 
-     */
-    add_chapter(section, chapter) {
-        chapter.section = section
-        chapter.url = `${section.root}/${chapter.src}`
-
-        section.chapters.push(chapter)
-        chapter.idx = this.repo.chapters.length
-        chapter.label = `${section.label}.${roman_numeral(section.chapters.length)}`
-        chapter.url = `${section.root}/${chapter.src}`
-        console.debug(`add_chapter ${chapter.idx} [${chapter.label} ${chapter.title}] ${chapter.url}`)
-        this.repo.chapters.push(chapter)
-    }
-    /**
+          /**
      * adds the chapter. The chapter url is the section.root prepended with chapter source
      * @param {Chapter} chapter 
      */
@@ -249,16 +295,12 @@ class Mahabharath {
         console.debug(`populate_section ${section.title} ${section.chapters.length} chapetrs`)
 
         var $item = $('<li>')
-        $item.css('white-space', 'nowrap')
-        $item.addClass('w3-text-yellow')
+        $item.addClass('parva')
         $div.append($item)
         $item.text(section.title)
 
         var $ul = $('<ul>')
-        $ul.css('list-style-type', 'none')
-        $ul.css('overflow', 'hidden')
-        $ul.css('text-overflow', 'ellipsis')
-        $ul.addClass('w3-text-white w3-small')
+        $ul.addClass('parva-list')
 
         $item.append($ul)
         for (var i =0; i < section.chapters.length; i++) {
@@ -266,14 +308,7 @@ class Mahabharath {
             var $li = $('<li>')
             $li.addClass('w3-tooltip')
             $ul.append($li)
-            // list item shows the title of each chapter. The chapter title if long
-            // is ecliipiszed. Then the tooltip shows the entire title
             $li.text(chapter.label + ' ' + chapter.title)
-            var $tooltip = $('<span>')
-            $tooltip.addClass('w3-text w3-tag w3-text-red')
-            $tooltip.css("position:absolute;left:-20px;bottom:18px")
-            $tooltip.text(chapter.title)
-            $li.append($tooltip)
             $li.on('click', function() {
                 // IMPORTANT
                 return false
@@ -283,20 +318,18 @@ class Mahabharath {
         return $item
     }
 }
-const ROMAN_NUMERALS = [undefined,
+const ROMAN_NUMERALS = [
                         'i', 'ii', 'iii', 'iv', 'v',
                         'vi', 'vii', 'viii', 'ix', 'x',
                         'xi', 'xii', 'xiii', 'xiv', 'xv',
                         'xvi', 'xvii', 'xviii', 'xix', 'xx']
-const ROMAN_NUMERALS_CAPITAL = [undefined,
+const ROMAN_NUMERALS_CAPITAL = [
                             'I', 'II', 'III', 'IV', 'V',
                             'VI', 'VII', 'VIII', 'IX', 'X',
                             'XI', 'XII', 'XIII', 'XIV', 'XV',
                             'XVI', 'XVII', 'XVIII', 'XIX', 'XX']
     
-function roman_numeral(num, capitalized) {
-        return capitalized ? ROMAN_NUMERALS_CAPITAL[num] : ROMAN_NUMERALS[num]
-}
+
 
 const DEFAULT_DIALOG_OPTIONS = {autoOpen:true, modal:false, 
     width:600, height:400,
@@ -322,10 +355,10 @@ function popup_dialog(href, options) {
 }
 
 Chapter.prototype.toString = function () {
-    return `${this.idx} [${this.section.title}] [${this.title}] ${this.url}`
+    return `${this.section.idx}:${this.idx} [${this.section.title}]/[${this.title}] ${this.url}`
 }
 Section.prototype.toString = function () {
-    return `${this.idx} [${this.title}] ${this.url}`
+    return `section ${this.idx} [${this.title}] ${this.url}`
 }
 
 

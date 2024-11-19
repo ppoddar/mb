@@ -1,8 +1,16 @@
-
+.parva{
+  white-space: nowrap;
+  color: yellow;
+}
 section:first-child:first-letter {
     color: #903; 
     font-family: Georgia;
     font-size: 4em;
+  }
+  .parva-chapters{
+    list-style-type: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .glossary {

@@ -21,33 +21,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="../css/mb.css">
 
+    <script src="../script/mb.js"/>
+
     <script>
         $().ready(function(){
             var mb = new Mahabharath()
-            // The content repository is populated statically
-            // The content URLs are hardcoded
-            // Add sections and chapters that refer to the content files on the server w.r.t sectiopn root
-            var adiParva  = mb.new_section(new Section({title:"Adi Parva", root:"adi", src:'adi.html'}))
-            var vanaParva = mb.new_section(new Section({title:"Vana Parva", root: "vana", src:'vani.html'}))
-            mb.add_chapter(adiParva,  new Chapter({title:"The Kuru Clan",           src:"00_kuru_clan.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Banished from Heaven",    src:"01_banished_from_heaven.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Ganga Makes a Pact",      src:"02_ganga_makes_a_pact.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Babies Floated in River", src:"03_babies_floated_in_river.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Curse of Octobasu",       src:"04_curse_of_octobasu.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"The Lost Son Returns",    src:"05_lost_son_returns.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"A Marriage Proposal",     src:"06_marriage_proposal.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Vishma Elopes the Brides",src:"08_vishma_elopes_brides.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Surrogate Birth",         src:"09_surrogate_birth.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Vyaas Comes to Rescue",   src:"10_vyaas_comes_to_rescue.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Birth of Kurus",          src:"11_birth_of_kurus.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"The Death of Pandu",      src:"13_death_of_pandu.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Murder Attempt on Bheema",src:"14_bheema_murder_attempt.html"}))
-            mb.add_chapter(adiParva,  new Chapter({title:"Drona Trains the Princes",src:"15_drona_trains_princes.html"}))
-            
-            mb.add_chapter(vanaParva, new Chapter({title:"Moy Builds Palace",       src:"01_moy_builds_palace.html"}))
-            
-            mb.repo.debug()
-            // Menu item handlers. The menu items' visibility toggles on click.
+                    // Menu item handlers. The menu items' visibility toggles on click.
             $('#menu-more').on('click', function(e) {
                 e.stopPropagation()
                 var $menu = $('#menu-content')
@@ -125,7 +104,25 @@
         <span class="w3-bar-item w3-right">&copy; Pinaki Poddar 2022-30</span>
     </div>    
     
-    
+    <div class="w3-row">
+  <div class="w3-col m4 l3">
+    <p>12 columns on a small screen, 4 on a medium screen, and 3 on a large screen.</p>
+    <ul id="toc"></ul>
+  </div>
+  <div class="w3-col m8 l9">
+    <p>12 columns on a small screen, 8 on a medium screen, and 9 on a large screen.</p>
+  <div id="chapter">
+    <div id="title"/>
+    <div id="content">
+    </div>
+    <div class="w3-bar">
+    <div id="chapter-prev-button" class="navigation-button w3-button w3-bar-item">back</div>
+    <div id="chapter-next-button" class="navigation-button w3-button w3-bar-item">more...</div>
+    <div id="copyright" class="w3-right w3-bar-item">&copy; Pinaki Poddar 2024-2030</div>
+    </div>  
+  </div>  
+  </div>
+</div>
 
     
 </body>
