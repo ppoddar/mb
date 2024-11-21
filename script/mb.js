@@ -145,7 +145,7 @@ class Chapter {
         $('#chapter-prev-button').data('chapter', this.prev())
         console.log(`loading chapter ${$content} from [${this.url}]...`)
         $content.load(this.url, function() {
-            console.log(`complete loading ${this.url}`)
+            console.log(`complete loading ${ctx.url}`)
             // glossary element when cicked pops-up the href content 
             $(".glossary").on("click", function() {
                 ctx.show_glossary($(this))
@@ -254,6 +254,8 @@ class Mahabharath {
     read_current_chapter_from_local_storage = function() {
         var idx1 = window.localStorage.getItem('section-idx') || 0
         var idx2 = window.localStorage.getItem('chapter-idx') || 0
+        if (idx1 == null || idx1 == 'undefined') idx1 = 0
+        if (idx2 == null || idx2 == 'undefined') idx2 = 0
         console.debug(`read last shown chapter index ${idx2} from local storage`)
         return this.repo.find_chapter_by_id(idx1, idx2)
     }
@@ -306,8 +308,9 @@ class Mahabharath {
     }
  $el = function (sel) {
     var e = $(sel)
-    if (e.length==0) {throw Error(`html element ${sel} not found`)
-    alert(`html element [${sel}] not found`) }   
+    if (e.length==0) {
+    alert(`html element [${sel}] not found`) 
+    throw Error(`html element ${sel} not found`)}   
     return e
 }
     
@@ -383,7 +386,7 @@ class Mahabharath {
                 return false
             })
             $li.data('chapter', chapter) // IMPORTANT
-            $li.on('click', this.show_chapter.bind(this))
+            $li.on('click', chapter.show.bind(chapter))
         }
         return $item
     }
