@@ -21,9 +21,10 @@
   * 
  */
 class Repository {
-    constructor() {
+    constructor(options) {
         console.debug(`creating empty content Repository...`)
-        this.sections       = []  
+        this.options    = options || {}
+        this.sections   = []  
     }
 
     /**
@@ -41,9 +42,10 @@ class Repository {
         var section = new Section(data)
         section.idx = this.sections.length
         section.label = roman_numeral[section.idx+1]
-        section.url  = `${this.docroot}/${this.options.root.content}/${section.root}`
-        console.debug(`new_section ${section.label}  [${section.title}] ${section.url}`)
-        this.repo.sections.push(section)
+        section.url  = `${this.options.docroot}/${this.options.root.content}/${section.root}`
+        console.debug(`new_section [${section.title}] ${section.url}`)
+        section.repo = this
+        this.sections.push(section)
         return section
     }
   
@@ -56,9 +58,10 @@ class Repository {
      */
     find_chapter_by_id(idx1, idx2) {
         if (idx1 < 0 || idx1>=this.sections.length) 
-            console.log(`section index ${idx1} out of bounds }`)
-        return this.sections[idx1].chapters[idx2]
-
+            console.log(`section index ${idx1} out of bounds`)
+        else
+            return this.sections[idx1].chapters[idx2]
+    }
     next_chapter(chapter){
         var idx2 = chapter.index+1
         if (idx2 >= this.sections[idx1].length) {
@@ -66,25 +69,11 @@ class Repository {
             idx1 = 0
         }
 
-        var idx1 = this.chapter.section.index+1
-        if (idx1>= this.sections.length) {
-            idx1 = 0
-        }
+        return this.sections[idx1].chapters[idx2]
     }
-            return this.chapters[0]
-        if (idx >= this.chapters.length) return this.chapters[0]
-        return this.chapters[idx]
-    }
+       
 
-    debug() {
-        for (var i = 0; i < this.sections.length; i++) {
-            console.debug(`${this.sections[i].title}`)
-        }
-        for (var i = 0; i < this.chapters.length; i++) {
-            var chapter = this.chapters[i]
-            console.debug(`${chapter.idx} ${chapter.label} ${chapter.title}`)
-        }
-    }
+    
 }
 
 // **********************************************************************
@@ -92,7 +81,7 @@ class Chapter {
     /**
      * creates a chapter. The index is not assigned at construction.
      * It is added when chapter is added to the repository
-     * @param {object} data has label, title and src
+     * @param {object} data has title and src
      */
     constructor(data) {
         this.idx   = -1
@@ -100,6 +89,46 @@ class Chapter {
         this.src   = data['src']
         this.url   = ''
     }
+
+    next(){
+        var idx1 = 0
+        var idx2 = 0
+        var lastChapter = this.idx==this.section.chapters.length-1
+        if (lastChapter){
+            var lastsection = this.section.idx == this.section.repo.sections.length-1
+            if (lastsection) {
+                idx1 = 0
+                idx2 = 0
+            } else 
+                idx1 = this.section.idx+1
+                idx2 = 0
+            } else {
+                 idx1 = this.section.idx
+                 idx2 = this.idx+1
+            }
+            return this.section.repo.find_chapter_by_id(idx1, idx2)
+    }
+    
+    prev(){
+        var idx1 = 0
+        var idx2 = 0
+        var firstChapter = this.idx==0
+        if (firstChapter){
+            var firstsection = this.section.idx == 0 //
+            if (firstsection) {
+                idx1 = this.section.repo.sections.length-1
+                idx2 = 0
+            } else 
+                idx1 = this.section.idx-1
+                idx2 = 0
+            } else {
+                 idx1 = this.section.idx
+                 idx2 = this.idx-1
+            }
+            return this.section.repo.find_chapter_by_id(idx1, idx2)
+        }
+    
+
 }
 // **********************************************************************
 class Section {
@@ -114,6 +143,7 @@ class Section {
         this.idx   = -1
         this.title = data['title']
         this.root  = data['root']
+        this.url   = ''
         this.chapters = []
     }
 
@@ -128,12 +158,11 @@ class Section {
         chapter.section = this
         chapter.url = `${this.url}/${chapter.src}`
 
-        section.chapters.push(chapter)
-        chapter.idx = section.chapters.length
-        chapter.label = `${section.label}.${roman_numeral(section.chapters.length)}`
-        chapter.url = `${section.root}/${chapter.src}`
-        console.debug(`add_chapter ${chapter.idx} [${chapter.label} ${chapter.title}] ${chapter.url}`)
-        this.repo.chapters.push(chapter)
+        chapter.idx = this.chapters.length
+        this.chapters.push(chapter)
+        chapter.url = `${this.url}/${chapter.src}`
+        console.debug(`add_chapter ${chapter.idx} [${chapter.title}] ${chapter.url}`)
+        
     }
 
 }
@@ -141,21 +170,27 @@ class Section {
 class Mahabharath {
     constructor() {
         console.debug(`creating Mahabharatha...`)
-        this.options = {
+
+        var options = {
             docroot:'content',
             logo: 'mb-logo.jpeg',
             // root paths w.r.t docroot 
-            root : {content: 'chapter', 
+            root : {content: 'chapters', 
                    glossary: 'glossary',
                    images:   'images' }
+            }
+            this.repo = new Repository(options)
+           this.populate_content()
         }
-        this.repo = new Repository()
+    
+
+    populate_content() {
 
         //     The content repository is populated statically
             // The content URLs are hardcoded
             // Add sections and chapters that refer to the content files on the server w.r.t sectiopn root
-            var adiParva  = mb.new_section(new Section({title:"Adi Parva", root:"adi"}))
-            var vanaParva = mb.new_section(new Section({title:"Vana Parva", root:"vana"}))
+            var adiParva  = this.repo.new_section(new Section({title:"Adi Parva", root:"adi"}))
+            var vanaParva = this.repo.new_section(new Section({title:"Vana Parva", root:"vana"}))
             adiParva.add_chapter(new Chapter({title:"The Kuru Clan",           src:"00_kuru_clan.html"}))
             adiParva.add_chapter(new Chapter({title:"Banished from Heaven",    src:"01_banished_from_heaven.html"}))
             adiParva.add_chapter(new Chapter({title:"Ganga Makes a Pact",      src:"02_ganga_makes_a_pact.html"}))
@@ -173,7 +208,7 @@ class Mahabharath {
             
             vanaParva.add_chapter(new Chapter({title:"Moy Builds Palace",       src:"01_moy_builds_palace.html"}))
             
-            mb.repo.debug()
+            //mb.repo.debug()
          
         
     }
@@ -194,9 +229,12 @@ class Mahabharath {
      * adds the chapter. The chapter url is the section.root prepended with chapter source
      * @param {Chapter} chapter 
      */
-    show_chapter = function (chapter) {
+    show_chapter = function (evt) {
+        
+        var chapter = $(evt.target).data('chapter')
         if (!chapter) {
-            console.warn(`can not show undefined chapter`)
+            alert(`can not show undefined chapter`)
+            throw new Error(`can not show undefined chapter`)
             return
         } 
         console.debug(`show chapter ${chapter.toString()}`)
@@ -204,44 +242,41 @@ class Mahabharath {
         // save chapter being rendered in the local storage. This acts like a bookmark
         localStorage.setItem('chapter-idx', chapter.idx)
         $('#section-title').text(chapter.section.title)
-        $('#chapter-title').text(chapter.title)
-        $('#chapter-title').css('font-weight', 'bold')
-        $('#status').text(chapter.title)
+        var $title = this.$el('#chapter #title')
+        var $content = this.$el('#chapter #content')
+
+        $title.text(chapter.title)
+        $title.css('font-weight', 'bold')
+        
         // the action handlers are set after the content is loaded into the view
         var ctx = this
-        $('#chapter-main').load(chapter.url, function() {
+        $('#chapter-next-button').data('chapter', chapter.next())
+        $('#chapter-prev-button').data('chapter', chapter.prev())
+        console.log(`loading chapter ${$content} from [${chapter.url}]...`)
+        $content.load(chapter.url, function() {
+            alert(`loaded ${chapter.url}`)
             // glossary element when cicked pops-up the href content 
             $(".glossary").on("click", function() {
                 ctx.show_glossary($(this))
             })
+            $(this)[0].scrollIntoView()
         })
-        $('#chapter-next-button').data('chapter-idx', chapter.idx+1)
-        $('#chapter-next-tooltip').data('chapter-idx', chapter.idx+1)
-        $('#chapter-prev-button').data('chapter-idx', chapter.idx-1)
-        $('#chapter-prev-tooltip').data('chapter-idx', chapter.idx-1)
-
-        $('#chapter-next-tooltip').text(ctx.repo.find_chapter_by_id(chapter.idx+1).title)
-        $('#chapter-prev-tooltip').text(ctx.repo.find_chapter_by_id(chapter.idx-1).title)
         
         // remove all past action handlers from naviagtion button
         $('.navigation-button').off('click')
-        $(".navigation-button").on('click', function() {
-            var chapter_idx = $(this).data('chapter-idx') // get the chapter associated with the button
-            var chapter_navigated = ctx.repo.find_chapter_by_id(chapter_idx)
-            ctx.show_chapter(chapter_navigated)
+        $(".navigation-button").on('click', function(){
+            ctx.show_chapter(evt)
             return false // IMPORTANT 
         })
         
     }
-
-    show_status = function($button, text1, text2) {
-        var $status = $('#status')
-        $button.hover(function() {
-            $status.text(text1)
-        }, function() {
-            $status.text(text2)
-        })
-    }
+ $el = function (sel) {
+    var e = $(sel)
+    if (e.length==0) {throw Error(`html element ${sel} not found`)
+    alert(`html element [${sel}] not found`) }   
+    return e
+}
+    
 
     /**
      * A glossary term is shown as a non-modal popup dialog. 
@@ -306,19 +341,20 @@ class Mahabharath {
         for (var i =0; i < section.chapters.length; i++) {
             var chapter = section.chapters[i]
             var $li = $('<li>')
-            $li.addClass('w3-tooltip')
+           
             $ul.append($li)
-            $li.text(chapter.label + ' ' + chapter.title)
+            $li.text(chapter.title)
             $li.on('click', function() {
                 // IMPORTANT
                 return false
             })
-            $li.on('click', this.show_chapter.bind(this, chapter))
+            $li.data('chapter', chapter)
+            $li.on('click', this.show_chapter.bind(this))
         }
         return $item
     }
 }
-const ROMAN_NUMERALS = [
+const roman_numeral = [
                         'i', 'ii', 'iii', 'iv', 'v',
                         'vi', 'vii', 'viii', 'ix', 'x',
                         'xi', 'xii', 'xiii', 'xiv', 'xv',
