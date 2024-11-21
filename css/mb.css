@@ -1,3 +1,8 @@
+.parva .parva-list > li{
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+}
 .parva{
   white-space: nowrap;
   color: black;
@@ -5,7 +10,7 @@
 section:first-child:first-letter {
     color: #903; 
     font-family: Georgia;
-    font-size: 4em;
+    font-size: 2em;
   }
   .parva-chapters{
     list-style-type: none;
@@ -32,14 +37,25 @@ section:first-child:first-letter {
     opacity: 0.5;
     color: green;
   }
-
+/*
   hr {
   display:block;
   border:none;
   height:20px;
   background-image:url('../content/images/divider.gif');
-} 
+}
+  */ 
 .subchapter {
   font-weight: bold;
   font-size: 1.2em;
+}
+
+#chapter #content {
+  border: 1px solid red;
+  border-radius: 2px;
+  font-size: 0.8em;
+}
+
+hr.dashed {
+  border: 1px dashed black;
 }

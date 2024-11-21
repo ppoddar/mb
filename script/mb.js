@@ -235,7 +235,7 @@ class Mahabharath {
         if (!chapter) {
             alert(`can not show undefined chapter`)
             throw new Error(`can not show undefined chapter`)
-            return
+            
         } 
         console.debug(`show chapter ${chapter.toString()}`)
         console.debug(`saving chapter index ${chapter.idx} in local storage`)
@@ -243,11 +243,11 @@ class Mahabharath {
         localStorage.setItem('chapter-idx', chapter.idx)
         $('#section-title').text(chapter.section.title)
         var $title = this.$el('#chapter #title')
-        var $content = this.$el('#chapter #content')
-
+        var $content = $('#chapter').find('#content')
+        if ($content.length==0) alert('html element for content not found')
         $title.text(chapter.title)
         $title.css('font-weight', 'bold')
-        
+        $title[0].scrollIntoView()
         // the action handlers are set after the content is loaded into the view
         var ctx = this
         $('#chapter-next-button').data('chapter', chapter.next())
@@ -259,7 +259,7 @@ class Mahabharath {
             $(".glossary").on("click", function() {
                 ctx.show_glossary($(this))
             })
-            $(this)[0].scrollIntoView()
+            
         })
         
         // remove all past action handlers from naviagtion button
@@ -348,7 +348,7 @@ class Mahabharath {
                 // IMPORTANT
                 return false
             })
-            $li.data('chapter', chapter)
+            $li.data('chapter', chapter) // IMPORTANT
             $li.on('click', this.show_chapter.bind(this))
         }
         return $item
