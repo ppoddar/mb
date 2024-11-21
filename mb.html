@@ -3,7 +3,7 @@
 <!-- This page is the scaffolding in which the content appears. -->
 <!-- The left side of the page is an index to the chapters      -->
 <!-- A chapter is a separate HTML file. The chapter content     -->
-<!-- appears in the main area.                                  -->
+<!-- appears in the content area on the right column.           -->
 <!-- ========================================================== -->
 <head>
     <title>Mahabharath</title>
@@ -57,24 +57,20 @@
 
             // populate the TOC on the left
             mb.show_toc($('#toc'))
+            // show the last shown page
             mb.read_current_chapter_from_local_storage().show()
-            
-
-            // show the last shown chapter
-            //var firstChapter = mb.read_current_chapter_from_local_storage()
-            //mb.show_chapter(firstChapter)
         })
     </script>
 </head>
 
 <body>
     <!-- The HTML element identifiers are referrred by mb.js script -->
-    <div id="header-main" class="'w3-bar w3-padding-16" style="background-color: #D4AF37;">
-        <!-- the main page (index.html) is two level up -->
-        <a href='/mb/index.html'><img class="w3-bar-item w3-margin" src="images/mb-logo.jpeg"></a>
+    <div id="header-main" class="'w3-bar w3-padding" style="background-color: #ffd700;">
+        <!-- the main page (index.html) is at the same level -->
+        <a href='index.html'><img class="w3-bar-item w3-margin" src="content/images/mb-logo.jpeg" width="24px" height="24px"></a>
         <div class="w3-bar-item" style="width:32em;display:inline-block">
-            <span class="w3-xxxlarge">Mahabharath</span><br>
-            <span class="w3-xxlarge" id="section-title"></span><br>
+            <span class="w3-xlarge">Mahabharatha</span><br>
+            <span class="w3-large" id="section-title"></span><br>
         </div>
         
         <input class="w3-bar-item" id="search-item" placeholder="find character/place">
