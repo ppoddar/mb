@@ -1,5 +1,5 @@
 #!/bin/sh
-REMOTE_USER=ubuntu
-REMOTE_HOST=184.72.3.220
-PEM_FILE=digital-artisan.cer
+REMOTE_USER=ec2-user
+REMOTE_HOST=13.233.70.150
+PEM_FILE=mahabharatha.pem
 ssh -i $PEM_FILE $REMOTE_USER@$REMOTE_HOST

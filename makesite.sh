@@ -5,10 +5,11 @@
 #  digital-artisar.cer
 #  exclude-rsync.txt
 # --------------------------------------------------------------
-REMOTE_USER=ubuntu
-#REMOTE_HOST=184.72.3.220
-REMOTE_HOST=digital-artisan.org
-PEM_FILE=digital-artisan.cer
+REMOTE_USER=ec2-user
+REMOTE_HOST=13.233.70.150
+REMOTE_PORT=8000
+#REMOTE_HOST=digital-artisan.org
+PEM_FILE=mahabharatha.pem
 
 # -------------------------------------------
 # rsyncs all web assets to aws EC2 machine
@@ -18,11 +19,11 @@ PEM_FILE=digital-artisan.cer
 SOURCE=./
 # Note also that host and module  references  don't  require  a  trailing
 # slash to copy the contents of the default directory.
-REMOTE_DEST=/var/www/html/mb
+REMOTE_DEST=/home/ec2-user/mb
 
-rsync -avz --omit-dir-times \
+sudo rsync -avz --omit-dir-times \
       -e "ssh -i $PEM_FILE" \
       --exclude-from=exclude-rsync.txt \
       $SOURCE $REMOTE_USER@$REMOTE_HOST:$REMOTE_DEST
 
-open https://$REMOTE_HOST/mb
+#open https://$REMOTE_HOST:$REMOTE_PORT

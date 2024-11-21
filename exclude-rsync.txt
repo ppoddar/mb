@@ -1,7 +1,9 @@
 .git/
 .gitignore
+node/
 .DS_Store
 digital-artisan.cer
+digital-artisan.pem
 makesite.sh 
 connect-ec2.sh 
 exclude-rsync.txt 
