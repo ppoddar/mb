@@ -57,7 +57,8 @@
 
             // populate the TOC on the left
             mb.show_toc($('#toc'))
-            $('#toc').get(0).trigger()
+            mb.read_current_chapter_from_local_storage().show()
+            
 
             // show the last shown chapter
             //var firstChapter = mb.read_current_chapter_from_local_storage()

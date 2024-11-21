@@ -78,6 +78,7 @@ class Repository {
 
 // **********************************************************************
 class Chapter {
+    
     /**
      * creates a chapter. The index is not assigned at construction.
      * It is added when chapter is added to the repository
@@ -127,9 +128,42 @@ class Chapter {
             }
             return this.section.repo.find_chapter_by_id(idx1, idx2)
         }
-    
-
+    show(){
+        console.debug(`show chapter ${this}`)
+        console.debug(`saving chapter index ${this.idx} in local storage`)
+        localStorage.setItem('chapter-idx', this.idx)
+        $('#section-title').text(this.section.title)
+        var $title = $('#chapter #title')
+        var $content = $('#chapter').find('#content')
+        if ($content.length==0) alert('html element for content not found')
+        $title.text(this.title)
+        $title.css('font-weight', 'bold')
+        $title[0].scrollIntoView()
+        // the action handlers are set after the content is loaded into the view
+        var ctx = this
+        $('#chapter-next-button').data('chapter', this.next())
+        $('#chapter-prev-button').data('chapter', this.prev())
+        console.log(`loading chapter ${$content} from [${this.url}]...`)
+        $content.load(this.url, function() {
+            console.log(`complete loading ${this.url}`)
+            // glossary element when cicked pops-up the href content 
+            $(".glossary").on("click", function() {
+                ctx.show_glossary($(this))
+            })
+            
+        })
+        
+        // remove all past action handlers from naviagtion button
+        $('.navigation-button').off('click')
+        $(".navigation-button").on('click', function(){
+            ctx.show_chapter(evt)
+            return false // IMPORTANT 
+        })
+        
+    }   
 }
+
+
 // **********************************************************************
 class Section {
     /**
@@ -254,7 +288,7 @@ class Mahabharath {
         $('#chapter-prev-button').data('chapter', chapter.prev())
         console.log(`loading chapter ${$content} from [${chapter.url}]...`)
         $content.load(chapter.url, function() {
-            alert(`loaded ${chapter.url}`)
+            //alert(`loaded ${chapter.url}`)
             // glossary element when cicked pops-up the href content 
             $(".glossary").on("click", function() {
                 ctx.show_glossary($(this))
