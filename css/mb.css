@@ -1,7 +1,14 @@
+#toc {
+  overflow: auto;
+}
+
+
+
 .parva .parva-list > li{
   text-overflow: ellipsis;
-  overflow: hidden;
-  font-size:.75em;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size:0.75em;
   color:blue;
 
 }
@@ -37,6 +44,7 @@ font-family: cursive;
     margin-left: 2em;
     margin-top: 2em;
     margin-bottom: 2em;
+    overflow: auto;
   }
 
   .jest {
@@ -70,6 +78,7 @@ font-family: cursive;
   border-radius: 4px;
   
   padding: 10px;
+  overflow: auto;
   
 }
 
