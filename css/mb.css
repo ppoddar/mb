@@ -14,6 +14,9 @@ section:first-child:first-letter {
     font-family: Georgia;
     font-size: 2em;
   }
+  #section-title{
+font-family: cursive;
+  }
   .parva-chapters{
     list-style-type: none;
     overflow: hidden;
@@ -51,13 +54,15 @@ section:first-child:first-letter {
 .subchapter {
   font-weight: bold;
   font-size: 1.2em;
+  border-top: 1px solid black;
 }
+
 #chapter {
   margin:10px;
-  font-size: 0.4em; 
+  font-size: 1em; 
 }
 #chapter #title {
-  font-size: 2.5em;
+  font-size: 1em;
   font-weight: bold;
 }
 #chapter #content {
