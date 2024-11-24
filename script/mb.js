@@ -138,7 +138,7 @@ class Chapter {
         if ($content.length==0) alert('html element for content not found')
         $title.text(this.title)
         $title.css('font-weight', 'bold')
-        $title[0].scrollIntoView()
+        $title[0].scrollIntoView({behaviour:'smooth'})
         // the action handlers are set after the content is loaded into the view
         var ctx = this
         $('#chapter-next-button').data('chapter', this.next())

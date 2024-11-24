@@ -1,6 +1,8 @@
 .parva .parva-list > li{
   text-overflow: ellipsis;
   overflow: hidden;
+  font-size:.75em;
+  color:blue;
 
 }
 .parva{
@@ -53,6 +55,10 @@ section:first-child:first-letter {
 #chapter {
   margin:10px;
   font-size: 0.4em; 
+}
+#chapter #title {
+  font-size: 2.5em;
+  font-weight: bold;
 }
 #chapter #content {
   border: 1px solid red;
