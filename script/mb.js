@@ -156,7 +156,8 @@ class Chapter {
         // remove all past action handlers from naviagtion button
         $('.navigation-button').off('click')
         $(".navigation-button").on('click', function(){
-            ctx.show_chapter(evt)
+            var chapter = $(this).data('chapter');
+            chapter.show()
             return false // IMPORTANT 
         })
         

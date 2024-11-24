@@ -16,6 +16,7 @@ section:first-child:first-letter {
     list-style-type: none;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 0.6em;
   }
 
   .glossary {
@@ -49,15 +50,20 @@ section:first-child:first-letter {
   font-weight: bold;
   font-size: 1.2em;
 }
-
+#chapter {
+  margin:10px;
+  font-size: 0.4em; 
+}
 #chapter #content {
   border: 1px solid red;
-  border-radius: 2px;
-  font-size: 0.8em;
+  border-radius: 4px;
+  
+  padding: 10px;
+  
 }
 
 hr.dashed {
-  border: 1px dashed black;
+  border-top: 1px dashed black;
 }
 
 em {
