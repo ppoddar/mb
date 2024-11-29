@@ -6,7 +6,8 @@
 #  exclude-rsync.txt
 # --------------------------------------------------------------
 REMOTE_USER=ec2-user
-REMOTE_HOST=54.193.158.233
+#REMOTE_HOST=54.193.158.233
+REMOTE_HOST=mahabharatha.in
 REMOTE_PORT=8000
 #REMOTE_HOST=digital-artisan.org
 PEM_FILE=digital-artisan.pem

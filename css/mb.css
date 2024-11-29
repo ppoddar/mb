@@ -34,11 +34,12 @@ font-family: cursive;
   .glossary {
     color: green;
     font-style: italic;
+    font-family: cursive;
   }
 
   .story {
     padding: 1em;
-    background-color: #DDDDDD;
+    background-color: #FFFF00;
     border: 1pt black solid;
     border-radius: 1em;
     margin-left: 2em;
@@ -60,17 +61,22 @@ font-family: cursive;
 }
   */ 
 .subchapter {
+  border-top: 1px solid red;
+  padding-top: 4em;
+}
+
+.subchapter #title {
   font-weight: bold;
   font-size: 1.2em;
-  border-top: 1px solid black;
 }
+
 
 #chapter {
   margin:10px;
-  font-size: 1em; 
+  
 }
 #chapter #title {
-  font-size: 1em;
+  
   font-weight: bold;
 }
 #chapter #content {
@@ -88,4 +94,7 @@ hr.dashed {
 
 em {
   color: #903;
+  font-family: cursive;
+  font-weight: bold;
+  font-style: italic;
 }
