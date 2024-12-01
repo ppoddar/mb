@@ -133,7 +133,7 @@ class Chapter {
         console.debug(`saving chapter index ${this.idx} in local storage`)
         localStorage.setItem('chapter-idx', this.idx)
         $('#section-title').text(this.section.title)
-        var $title = $('#chapter #title')
+        var $title = $('#chapter').find('#title')
         var $content = $('#chapter').find('#content')
         if ($content.length==0) alert('html element for content not found')
         $title.text(this.title)
@@ -141,8 +141,8 @@ class Chapter {
         $title[0].scrollIntoView({behaviour:'smooth'})
         // the action handlers are set after the content is loaded into the view
         var ctx = this
-        $('#chapter-next-button').data('chapter', this.next())
-        $('#chapter-prev-button').data('chapter', this.prev())
+        $('.chapter-next-button').data('chapter', this.next())
+        $('.chapter-prev-button').data('chapter', this.prev())
         console.log(`loading chapter ${$content} from [${this.url}]...`)
         $content.load(this.url, function() {
             console.log(`complete loading ${ctx.url}`)
@@ -155,7 +155,12 @@ class Chapter {
         
         // remove all past action handlers from naviagtion button
         $('.navigation-button').off('click')
-        $(".navigation-button").on('click', function(){
+        $(".chapter-next-button").on('click', function(){
+            var chapter = $(this).data('chapter');
+            chapter.show()
+            return false // IMPORTANT 
+        })
+        $(".chapter-prev-button").on('click', function(){
             var chapter = $(this).data('chapter');
             chapter.show()
             return false // IMPORTANT 
