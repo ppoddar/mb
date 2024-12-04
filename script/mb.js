@@ -113,17 +113,19 @@ class Chapter {
     prev(){
         var idx1 = 0
         var idx2 = 0
+        repo = this.section.repo
+
         var firstChapter = this.idx==0
         if (firstChapter){
             var firstsection = this.section.idx == 0 //
             if (firstsection) {
-                idx1 = this.section.repo.sections.length-1
-                idx2 = 0
-            } else 
-                idx1 = this.section.idx-1
-                idx2 = 0
+                idx1 = repo.sections.length-1 // last section
             } else {
-                 idx1 = this.section.idx
+                idx1 = this.section.idx-1 // previous section
+            }
+            idx2 = repo.sections[idx1].chapters.length-1 // last chapter of prev section
+        } else {
+                 idx1 = this.section.idx // section does not change; same 
                  idx2 = this.idx-1
             }
             return this.section.repo.find_chapter_by_id(idx1, idx2)

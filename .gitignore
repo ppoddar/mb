@@ -1,3 +1,5 @@
 node_modules/
+ssl/
+node/
 package-lock.json
 .DS_Store
