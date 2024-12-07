@@ -113,7 +113,7 @@ class Chapter {
     prev(){
         var idx1 = 0
         var idx2 = 0
-        repo = this.section.repo
+        var repo = this.section.repo
 
         var firstChapter = this.idx==0
         if (firstChapter){
@@ -134,6 +134,7 @@ class Chapter {
         console.debug(`show chapter ${this}`)
         console.debug(`saving chapter index ${this.idx} in local storage`)
         localStorage.setItem('chapter-idx', this.idx)
+        localStorage.setItem('section-idx', this.section.idx)
         $('#section-title').text(this.section.title)
         var $title = $('#chapter').find('#title')
         var $content = $('#chapter').find('#content')
@@ -141,7 +142,6 @@ class Chapter {
         $title.text(this.title)
         $title.css('font-weight', 'bold')
         $title[0].scrollIntoView({behaviour:'smooth'})
-        // the action handlers are set after the content is loaded into the view
         var ctx = this
         $('.chapter-next-button').data('chapter', this.next())
         $('.chapter-prev-button').data('chapter', this.prev())
@@ -237,7 +237,6 @@ class Mahabharath {
             adiParva.add_chapter(new Chapter({title:"Banished from Heaven",    src:"01_banished_from_heaven.html"}))
             adiParva.add_chapter(new Chapter({title:"Ganga Makes a Pact",      src:"02_ganga_makes_a_pact.html"}))
             adiParva.add_chapter(new Chapter({title:"Babies Floated in River", src:"03_babies_floated_in_river.html"}))
-            adiParva.add_chapter(new Chapter({title:"Curse of Octobasu",       src:"04_curse_of_octobasu.html"}))
             adiParva.add_chapter(new Chapter({title:"The Lost Son Returns",    src:"05_lost_son_returns.html"}))
             adiParva.add_chapter(new Chapter({title:"A Marriage Proposal",     src:"06_marriage_proposal.html"}))
             adiParva.add_chapter(new Chapter({title:"Vishma Elopes the Brides",src:"08_vishma_elopes_brides.html"}))
@@ -247,11 +246,11 @@ class Mahabharath {
             adiParva.add_chapter(new Chapter({title:"The Death of Pandu",      src:"13_death_of_pandu.html"}))
             adiParva.add_chapter(new Chapter({title:"Murder Attempt on Bheema",src:"14_bheema_murder_attempt.html"}))
             adiParva.add_chapter(new Chapter({title:"Drona Trains the Princes",src:"15_drona_trains_princes.html"}))
-            adiParva.add_chapter(new Chapter({title:"The Palace of Lac",       src:"16_palace_of_lac.html"}))
+            adiParva.add_chapter(new Chapter({title:"The House of Lac",       src:"16_palace_of_lac.html"}))
             
             vanaParva.add_chapter(new Chapter({title:"Moy Builds Palace",       src:"01_moy_builds_palace.html"}))
             
-            //mb.repo.debug()
+            
          
         
     }
