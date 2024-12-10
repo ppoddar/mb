@@ -246,7 +246,7 @@ class Mahabharath {
             adiParva.add_chapter(new Chapter({title:"The Death of Pandu",      src:"13_death_of_pandu.html"}))
             adiParva.add_chapter(new Chapter({title:"Murder Attempt on Bheema",src:"14_bheema_murder_attempt.html"}))
             adiParva.add_chapter(new Chapter({title:"Drona Trains the Princes",src:"15_drona_trains_princes.html"}))
-            adiParva.add_chapter(new Chapter({title:"The House of Lac",       src:"16_palace_of_lac.html"}))
+            adiParva.add_chapter(new Chapter({title:"The House of Lac",       src:"16_house_of_lac.html"}))
             
             vanaParva.add_chapter(new Chapter({title:"Moy Builds Palace",       src:"01_moy_builds_palace.html"}))
             
