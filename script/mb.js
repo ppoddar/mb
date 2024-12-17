@@ -244,7 +244,7 @@ class Mahabharath {
             adiParva.add_chapter(new Chapter({title:"Vyaas Comes to Rescue",   src:"10_vyaas_comes_to_rescue.html"}))
             adiParva.add_chapter(new Chapter({title:"Birth of Kauravus",       src:"11_birth_of_kurus.html"}))
             adiParva.add_chapter(new Chapter({title:"The Death of Pandu",      src:"13_death_of_pandu.html"}))
-            adiParva.add_chapter(new Chapter({title:"Murder Attempt on Bhima", src:"14_bhima_murder_attempt.html"}))
+            adiParva.add_chapter(new Chapter({title:"Murder Attempt on Bhim",  src:"14_bhim_murder_attempt.html"}))
             adiParva.add_chapter(new Chapter({title:"Drona Trains the Princes",src:"15_drona_trains_princes.html"}))
             adiParva.add_chapter(new Chapter({title:"The House of Lac",        src:"16_house_of_lac.html"}))
             
