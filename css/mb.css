@@ -8,7 +8,6 @@
   text-overflow: ellipsis;
   overflow-x: hidden;
   overflow-y: auto;
-  font-size:0.75em;
   color:blue;
   cursor:pointer;
 
@@ -30,6 +29,12 @@ font-family: cursive;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 0.6em;
+  }
+
+  span {
+    color: blue;
+    font-style: italic;
+    font-family: cursive;
   }
 
   .glossary {
