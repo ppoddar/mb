@@ -201,6 +201,7 @@ class Section {
         chapter.url = `${this.url}/${chapter.src}`
 
         chapter.idx = this.chapters.length
+        chapter.label = `${roman_numeral[this.idx]}.${roman_numeral[chapter.idx]}`
         this.chapters.push(chapter)
         chapter.url = `${this.url}/${chapter.src}`
         console.debug(`add_chapter ${chapter.idx} [${chapter.title}] ${chapter.url}`)
@@ -248,6 +249,8 @@ class Mahabharath {
             adiParva.add_chapter(new Chapter({title:"Drona Trains the Princes",src:"15_drona_trains_princes.html"}))
             adiParva.add_chapter(new Chapter({title:"The House of Lac",        src:"16_house_of_lac.html"}))
             adiParva.add_chapter(new Chapter({title:"Hirimb and Ghatotcacha",  src:"17_hirimb_and_ghatotcacha.html"}))
+            adiParva.add_chapter(new Chapter({title:"killing of BakRakshak",   src:"18_killing_of_bakarakshakh.html"}))
+            adiParva.add_chapter(new Chapter({title:"The birth of Draupadi",   src:"19_birth_of_draupadi.html" }))
             
             vanaParva.add_chapter(new Chapter({title:"Moy Builds Palace",       src:"01_moy_builds_palace.html"}))
             
@@ -290,7 +293,7 @@ class Mahabharath {
         var $title = this.$el('#chapter #title')
         var $content = $('#chapter').find('#content')
         if ($content.length==0) alert('html element for content not found')
-        $title.text(chapter.title)
+        $title.text(`${chapter.label} ${chapter.title}`)
         $title.css('font-weight', 'bold')
         $title[0].scrollIntoView()
         // the action handlers are set after the content is loaded into the view
@@ -389,7 +392,7 @@ class Mahabharath {
             var $li = $('<li>')
            
             $ul.append($li)
-            $li.text(chapter.title)
+            $li.text(`${chapter.label}) ${chapter.title}`)
             $li.on('click', function() {
                 // IMPORTANT
                 return false

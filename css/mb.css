@@ -28,7 +28,6 @@ font-family: cursive;
     list-style-type: none;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 0.6em;
   }
 
   span {
